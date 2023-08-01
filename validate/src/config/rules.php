@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'Allow_Empty' => \dmyers\validate\rules\Allow_Empty::class, // special rule handled internally by validator
+    'Alpha' => \dmyers\validate\rules\Alpha::class,
+    'Alpha_dash' => \dmyers\validate\rules\Alpha_dash::class,
+    'Alpha_numeric' => \dmyers\validate\rules\Alpha_numeric::class,
+    'Alpha_numeric_spaces' => \dmyers\validate\rules\Alpha_numeric_spaces::class,
+    'Alpha_space' => \dmyers\validate\rules\Alpha_space::class,
+    'Decimal' => \dmyers\validate\rules\Decimal::class,
+    'Differs' => \dmyers\validate\rules\Differs::class,
+    'Exact_length' => \dmyers\validate\rules\Exact_length::class,
+    'Greater_than' => \dmyers\validate\rules\Greater_than::class,
+    'Greater_than_equal_to' => \dmyers\validate\rules\Greater_than_equal_to::class,
+    'In_list' => \dmyers\validate\rules\In_list::class,
+    'Integer' => \dmyers\validate\rules\Integer::class,
+    'Is_natural' => \dmyers\validate\rules\Is_natural::class,
+    'Is_natural_no_zero' => \dmyers\validate\rules\Is_natural_no_zero::class,
+    'Is_unique' => \dmyers\validate\rules\Is_unique::class,
+    'Less_than' => \dmyers\validate\rules\Less_than::class,
+    'Less_than_equal_to' => \dmyers\validate\rules\Less_than_equal_to::class,
+    'Matches' => \dmyers\validate\rules\Matches::class,
+    'Max_length' => \dmyers\validate\rules\Max_length::class,
+    'Min_length' => \dmyers\validate\rules\Min_length::class,
+    'Numeric' => \dmyers\validate\rules\Numeric::class,
+    'Regex_match' => \dmyers\validate\rules\Regex_match::class,
+    'Required' => \dmyers\validate\rules\Required::class,
+    'Valid_base64' => \dmyers\validate\rules\Valid_base64::class,
+    'Valid_email' => \dmyers\validate\rules\Valid_email::class,
+    'Valid_emails' => \dmyers\validate\rules\Valid_emails::class,
+    'Valid_ip' => \dmyers\validate\rules\Valid_ip::class,
+    'Valid_url' => \dmyers\validate\rules\Valid_url::class,
+];
