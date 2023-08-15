@@ -6,12 +6,11 @@ use dmyers\orange\Data;
 use dmyers\orange\Output;
 use peel\session\Session;
 use peel\flashmsg\Flashmsg;
-use PHPUnit\Framework\TestCase;
 use Framework\Session\SaveHandlers\FilesHandler;
 
-final class FlashmsgTest extends TestCase
+final class FlashmsgTest extends unitTestHelper
 {
-    private $instance;
+    protected $instance;
     private $data;
     private $output;
 
@@ -99,20 +98,15 @@ final class FlashmsgTest extends TestCase
     {
         $this->instance->msg('Oh no we have a problem!', 'danger')->redirect('/go/here');
 
-        $output = $this->output->__debugInfo();
-
-        $this->assertEquals('Location: /go/here', $output['sent headers'][0]);
-        $this->assertEquals(302, $output['sent code']);
+        $this->assertEquals('Location: /go/here', $this->getPrivatePublic('sentHeaders', $this->output)[0]);
+        $this->assertEquals(302, $this->getPrivatePublic('sentCode', $this->output));
     }
 
     public function testRedirectRefer(): void
     {
         $this->instance->msg('Oh no we have a problem!', 'danger')->redirect('@');
 
-        $output = $this->output->__debugInfo();
-
-        $this->assertEquals('Location: https://www.example.com/about', $output['sent headers'][0]);
-        $this->assertEquals(302, $output['sent code']);
+        $this->assertEquals('Location: https://www.example.com/about', $this->getPrivatePublic('sentHeaders', $this->output)[0]);
+        $this->assertEquals(302, $this->getPrivatePublic('sentCode', $this->output));
     }
-
 }

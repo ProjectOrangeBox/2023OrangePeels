@@ -11,7 +11,7 @@ use dmyers\orange\interfaces\InputInterface;
 class Stash implements StashInterface
 {
     protected InputInterface $input;
-    protected SessionInterface $session = null;
+    protected SessionInterface $session;
 
     protected string $stashKey = '__#stash#__';
 

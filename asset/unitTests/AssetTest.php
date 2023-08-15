@@ -5,11 +5,10 @@ declare(strict_types=1);
 use peel\asset\Asset;
 use dmyers\orange\Data;
 use peel\asset\Priority;
-use PHPUnit\Framework\TestCase;
 
-final class AssetTest extends TestCase
+final class AssetTest extends \unitTestHelper
 {
-    private $instance;
+    protected $instance;
     private $dataInstance;
 
     protected function setUp(): void

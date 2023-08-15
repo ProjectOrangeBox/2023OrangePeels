@@ -16,5 +16,4 @@ interface PriorityInterface
     public function get(string $name): mixed;
     public function add(string $name, string $value, bool|int $append = true, int $priority = self::NORMAL): self;
     public function addMultiple(array $array, bool|int $append = true, int $priority = self::NORMAL): self;
-    public function __debugInfo(): array;
 }

@@ -15,7 +15,7 @@ class Priority implements PriorityInterface
         return isset($this->data[$this->normalizeName($name)]);
     }
 
-    public function get(string $name, string $glue = ''): mixed
+    public function get(string $name): mixed
     {
         $name = $this->normalizeName($name);
         $outputText = '';
@@ -61,13 +61,6 @@ class Priority implements PriorityInterface
         }
 
         return $this;
-    }
-
-    public function __debugInfo(): array
-    {
-        return [
-            'data' => $this->data,
-        ];
     }
 
     /* protected */

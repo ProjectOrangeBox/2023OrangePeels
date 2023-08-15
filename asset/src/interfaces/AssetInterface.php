@@ -21,5 +21,4 @@ interface AssetInterface
     public function javascriptVariable(string $key, $value, bool $raw = false, int $priority = Priority::NORMAL): self;
     public function javascriptVariables(array $array): self;
     public function bodyClass(string|array $class, int $priority = Priority::NORMAL): self;
-    public function __debugInfo(): array;
 }

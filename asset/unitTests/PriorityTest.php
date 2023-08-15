@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 use peel\asset\Priority;
-use PHPUnit\Framework\TestCase;
 
-final class PriorityTest extends TestCase
+final class PriorityTest extends \unitTestHelper
 {
-    private $instance;
+    protected $instance;
 
     protected function setUp(): void
     {

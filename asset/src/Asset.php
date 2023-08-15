@@ -12,7 +12,7 @@ use peel\asset\Interfaces\PriorityInterface;
 
 class Asset implements AssetInterface
 {
-    private AssetInterface $instance;
+    private static AssetInterface $instance;
     protected array $config;
     protected PriorityInterface $priority;
     protected DataInterface $data;
@@ -35,7 +35,7 @@ class Asset implements AssetInterface
         }
     }
 
-    public function getInstance(array $config, DataInterface $data)
+    public static function getInstance(array $config, DataInterface $data)
     {
         if (!isset(self::$instance)) {
             self::$instance = new self($config, $data);
@@ -238,14 +238,5 @@ class Asset implements AssetInterface
         }
 
         return rtrim($attributesString, ',');
-    }
-
-    public function __debugInfo(): array
-    {
-        return [
-            'config' => $this->config,
-            'priority' => $this->priority->__debugInfo(),
-            'data' => $this->data,
-        ];
     }
 }
