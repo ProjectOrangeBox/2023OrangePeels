@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\rules;
+namespace peel\validate\rules;
 
-use dmyers\validate\abstract\ValidationRuleAbstract;
-use dmyers\validate\interfaces\ValidationRuleInterface;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\abstract\ValidationRuleAbstract;
+use peel\validate\interfaces\ValidationRuleInterface;
 
 class Matches extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-    public function isValid(mixed $field, string $options = ''): bool
+    public function isValid(mixed $input, string $options = ''): void
     {
         $this->errorString = '%s does not match %s.';
 
-        return isset($this->fieldsData[$options]) ? ($field === $this->fieldsData[$options]) : false;
+        return isset($this->fieldsData[$options]) ? ($input === $this->fieldsData[$options]) : false;
     }
 }

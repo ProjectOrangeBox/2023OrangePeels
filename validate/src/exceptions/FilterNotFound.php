@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\exceptions;
+namespace peel\validate\exceptions;
 
 class FilterNotFound extends \Exception
 {

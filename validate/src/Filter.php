@@ -2,26 +2,30 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate;
+namespace peel\validate;
 
-use dmyers\validate\exceptions\InvalidValue;
-use dmyers\validate\interfaces\FilterInterface;
-use dmyers\validate\interfaces\ValidateInterface;
+use dmyers\orange\interfaces\InputInterface;
+use peel\validate\exceptions\InvalidValue;
+use peel\validate\interfaces\FilterInterface;
+use peel\validate\interfaces\ValidateInterface;
 
 class Filter implements FilterInterface
 {
     private static FilterInterface $instance;
 
     protected ValidateInterface $validate;
-    protected array $input = [];
+    protected InputInterface $input;
 
-    private function __construct(ValidateInterface $validate, array $input)
+    protected array $validInputMethods = ['post', 'get', 'request', 'server', 'file', 'cookie'];
+    protected string $filterSeparator = '|';
+
+    public function __construct(ValidateInterface $validate, InputInterface $input)
     {
         $this->validate = $validate;
         $this->input = $input;
     }
 
-    public static function getInstance(ValidateInterface $validate, array $input): self
+    public static function getInstance(ValidateInterface $validate, InputInterface $input): self
     {
         if (!isset(self::$instance)) {
             self::$instance = new self($validate, $input);
@@ -30,31 +34,44 @@ class Filter implements FilterInterface
         return self::$instance;
     }
 
+    public function post(string $name = null, string $filters = '', $default = null): mixed
+    {
+        return $this->pickFiltered('post', $name, $filters, $default);
+    }
+
+    public function get(string $name = null, string $filters = '', $default = null): mixed
+    {
+        return $this->pickFiltered('get', $name, $filters, $default);
+    }
+
+    public function request(string $name = null, string $filters = '', $default = null): mixed
+    {
+        return $this->pickFiltered('request', $name, $filters, $default);
+    }
+
+    public function server(string $name = null, string $filters = '', $default = null): mixed
+    {
+        return $this->pickFiltered('server', $name, $filters, $default);
+    }
+
+    public function file(string $name = null, string $filters = '', $default = null): mixed
+    {
+        return $this->pickFiltered('file', $name, $filters, $default);
+    }
+
+    public function cookie(string $name = null, string $filters = '', $default = null): mixed
+    {
+        return $this->pickFiltered('cookie', $name, $filters, $default);
+    }
+
+    /**
+     * add an rule
+     */
     public function attach(string $name, string $class): self
     {
         $this->validate->attachFilter($name, $class);
 
         return $this;
-    }
-
-    public function post(string $name, string $filters, $default = null): mixed
-    {
-        return $this->pick('post', $name, $filters, $default);
-    }
-
-    public function get(string $name, string $filters, $default = null): mixed
-    {
-        return $this->pick('get', $name, $filters, $default);
-    }
-
-    public function request(string $name, string $filters, $default = null): mixed
-    {
-        return $this->pick('request', $name, $filters, $default);
-    }
-
-    public function server(string $name, string $filters, $default = null): mixed
-    {
-        return $this->pick('server', $name, $filters, $default);
     }
 
     /**
@@ -65,50 +82,50 @@ class Filter implements FilterInterface
         return $this->validate->filter($value, $filter);
     }
 
-    public function copy(): array
+    /**
+     * remap input array keys
+     */
+    public function remapInput(string $method, string $mapping): array
     {
-        return $this->input;
-    }
+        $input = $this->pickFromInput($method, null, null);
+        
+        if (!empty($mapping)) {
+            $input = $this->remap($input, $mapping);
 
-    public function replace(array $input): self
-    {
-        foreach ($input as $type => $values) {
-            $this->input[$type] = $values;
+            $this->replaceInInput($method, $input);
         }
 
-        return $this;
+        // also send back remapped
+        return $input;
     }
 
-    public function remapInput(string $type, string $mapping): array
-    {
-        $this->input[$type] = $this->remap($this->input[$type], $mapping);
-
-        return $this->input[$type];
-    }
-
-    /*
+    /**
      * remap
      *
-     * string mapping fname>first_name|last_name<lname|fullname=first_name|fullname>/dev/null|new<@concat($first_name," ",$last_name)|foo<@substr($phone,0,3)
-     * string type [get|post|request|server]
+     * mapping fname>first_name|last_name<lname|fullname=first_name|fullname>#|new<=concat($first_name," ",$last_name)|foo<=substr($phone,0,3)
      *
-     * Rename field named "A" to field named "B" A>B
-     * Rename from field named "B" to field named "A" A<B
-     * Copy from field named "A" into field named "B" A=B
-     * "Delete" (send it to dev null) field named "A" A>/dev/null or /dev/null<A
-     *
+     * Rename array key "A" to array key "B" : A>B
+     * Rename array key "B" to array key "A" : A<B
+     * Copy from array key "A" into array key "B" : A=B
+     * Delete array key "A" : A>#
+     * 
      * Perform "calculation" (like excel)
      * functions called must be global or called statically
      *
-     * A<@concat($fielda,' ',$fieldb)
-     * B<@trim($fieldb)
-     * @substr($fielda,0,4)>A
+     * A<=concat($fielda,' ',$fieldb)
+     * B<=trim($fieldb)
+     * =substr($fielda,0,4)>A
+     * 
+     * the variables are the "extracted" keys from the $input
+     * 
+     * so if your input is $input = ['foo'=>1,'bar'=>2];
+     * then in your formula $foo and $bar are available
      *
      *
      */
     public function remap(array $input, string $mapping): array
     {
-        $re = '/(?<section1>[^<=>]+)(?<operator>[<=>]{1,2})(?<section2>[^<=>]+)/';
+        $re = ';(?<section1>^[=]?[^<=>]+)(?<operator>[<=>]{1})(?<section2>.+);';
         $matches = [];
 
         foreach (explode('|', $mapping) as $seg) {
@@ -118,18 +135,18 @@ class Filter implements FilterInterface
                 throw new InvalidValue('Remap input error "' . $seg . '".');
             }
 
-            $section1 = strtolower($matches['section1']);
-            $section2 = strtolower($matches['section2']);
+            $section1 = $matches['section1'];
+            $section2 = $matches['section2'];
 
             $section1Value = $input[$section1] ?? '';
             $section2Value = $input[$section2] ?? '';
 
             // handle formulas
-            if (substr($section1, 0, 1) == '@') {
+            if (substr($section1, 0, 1) == '=') {
                 $section1Value = $this->formula(substr($section1, 1), $input);
             }
 
-            if (substr($section2, 0, 1) == '@') {
+            if (substr($section2, 0, 1) == '=') {
                 $section2Value = $this->formula(substr($section2, 1), $input);
             }
 
@@ -155,8 +172,8 @@ class Filter implements FilterInterface
                     throw new InvalidValue('Unknown remap operator "' . $matches['operator'] . '" in "' . $seg . '".');
             }
 
-            // anything sent to /dev/null is deleted
-            unset($input['/dev/null']);
+            // anything sent to # is deleted
+            unset($input['#']);
         }
 
         return $input;
@@ -165,39 +182,66 @@ class Filter implements FilterInterface
     /**
      * Protected
      */
-    protected function pick(string $type, string $name, string $filters, $default = null)
-    {
-        $value = $this->inputPick($type, $name, $default);
-
-        foreach (\explode('|', $filters) as $filter) {
-            $value = $this->field($value, $filter);
-        }
-
-        return $value;
-    }
 
     /**
-     * copy of input pick
+     * eval inside a closure (ie. jailed)
+     * 
+     * but still only use developer formulas
      */
-    protected function inputPick(string $type, ?string $name = null, $default = null)
-    {
-        if ($name === null) {
-            $value = $this->input[$type];
-        } elseif (isset($this->input[$type][strtolower($name)])) {
-            $value = $this->input[$type][strtolower($name)];
-        } else {
-            $value = $default;
-        }
-
-        return $value;
-    }
-
-    protected function formula($logic, $arguments)
+    protected function formula($logic, $arguments): mixed
     {
         // create a closure in it's own jailed box
         $closure = eval('return function($arguments){extract($arguments);return(' . $logic . ');};');
 
         // call the closure
         return $closure($arguments);
+    }
+
+    /**
+     * get from input with filter
+     */
+    protected function pickFiltered(string $method, ?string $name, ?string $filters = '', $default = null): mixed
+    {
+        $value = $this->pickFromInput($method, $name, $default);
+
+        if (!empty($filters)) {
+            foreach (\explode($this->filterSeparator, $filters) as $filter) {
+                $value = $this->field($value, $filter);
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * get from input
+     */
+    protected function pickFromInput(string $method, ?string $name, $default = null): mixed
+    {
+        $method = strtolower($method);
+
+        if (!in_array($method, $this->validInputMethods)) {
+            throw new InvalidValue($method);
+        }
+
+        return $this->input->$method($name, $default);
+    }
+
+    /**
+     * replace content in input
+     */
+    protected function replaceInInput(string $method, $name, $value = null): void
+    {
+        $method = strtolower($method);
+
+        if (is_array($name)) {
+            $inputArray = $name;
+        } else {
+            $inputArray = $this->pickFromInput($method, null, null);
+
+            $inputArray[$name] = $value;
+        }
+
+        $this->input->replace([$method => $inputArray]);
     }
 }

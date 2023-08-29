@@ -1,23 +1,28 @@
 <?php
 
-namespace dmyers\validate\filters;
+namespace peel\validate\filters;
 
-use dmyers\validate\abstract\FilterAbstract;
-use dmyers\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\FilterAbstract;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\interfaces\FilterRuleInterface;
 
 class Filename extends FilterAbstract implements FilterRuleInterface
 {
-    public function filter(mixed $field, string $options = ''): mixed
+    public function filter(mixed $input, string $options = ''): mixed
     {
+        if (!is_scalar($input) || is_bool($input)) {
+            throw new ValidationFailed('%s is not filterable.');
+        }
+
         /*
         only word characters - from a-z, A-Z, 0-9, including the _ (underscore) character
         then trim any _ (underscore) characters from the beginning and end of the string
         */
-        $field = \strtolower(\trim(\preg_replace('#\W+#', '_', $field), '_'));
+        $input = \strtolower(\trim(\preg_replace('#\W+#', '_', (string)$input), '_'));
 
-        $field = \preg_replace('#_+#', '_', $field);
+        $input = \preg_replace('#_+#', '_', $input);
 
         /* options is max length - filter is in orange core */
-        return $this->length($field, $options);
+        return $this->length($input, $options);
     }
 }

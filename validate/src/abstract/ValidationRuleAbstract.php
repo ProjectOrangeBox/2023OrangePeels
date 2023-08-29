@@ -2,32 +2,24 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\abstract;
+namespace peel\validate\abstract;
 
-use dmyers\validate\abstract\FilterAbstract;
-use dmyers\validate\interfaces\ValidationRuleInterface;
+use peel\validate\interfaces\ValidateInterface;
+use peel\validate\interfaces\ValidationRuleInterface;
 
-abstract class ValidationRuleAbstract extends FilterAbstract implements ValidationRuleInterface
+abstract class ValidationRuleAbstract implements ValidationRuleInterface
 {
-    protected array $fieldsData; /* all fields */
-    protected string $errorString = '';
+    protected array $config = [];
+    protected ValidateInterface $parent;
 
-    public function isValid(mixed $field, string $options = ''): bool
+    public function __construct(array $config, ValidateInterface $parent)
     {
-        return false;
+        $this->config = $config;
+        $this->parent = $parent;
     }
 
-    public function fields(array &$fieldsData): self
+    // throw error on fail
+    public function isValid(mixed $input, string $options = ''): void
     {
-        $fieldsData = &$fieldsData;
-
-        return $this;
-    }
-
-    public function errorString(string &$errorString): self
-    {
-        $this->errorString = &$errorString;
-
-        return $this;
     }
 }

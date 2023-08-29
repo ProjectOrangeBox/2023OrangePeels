@@ -1,14 +1,19 @@
 <?php
 
-namespace dmyers\validate\filters;
+namespace peel\validate\filters;
 
-use dmyers\validate\abstract\FilterAbstract;
-use dmyers\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\FilterAbstract;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\interfaces\FilterRuleInterface;
 
 class Length extends FilterAbstract implements FilterRuleInterface
 {
-    public function filter(mixed $field, string $options = ''): mixed
+    public function filter(mixed $input, string $options = ''): mixed
     {
-        return $this->length($field, $options);
+        if (!is_scalar($input) || is_bool($input)) {
+            throw new ValidationFailed('%s is not filterable.');
+        }
+
+        return $this->length((string)$input, $options);
     }
 }

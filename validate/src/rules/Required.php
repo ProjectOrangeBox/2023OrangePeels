@@ -2,17 +2,33 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\rules;
+namespace peel\validate\rules;
 
-use dmyers\validate\abstract\ValidationRuleAbstract;
-use dmyers\validate\interfaces\ValidationRuleInterface;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\abstract\ValidationRuleAbstract;
+use peel\validate\interfaces\ValidationRuleInterface;
 
-class Required extends ValidationRuleAbstract implements ValidationRuleInterface
+class required extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-    public function isValid(mixed $field, string $options = ''): bool
-    {
-        $this->errorString = '%s is required.';
+	public function isValid(mixed $input, string $options = ''): void
+	{
+		$this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
 
-        return is_array($field) ? (bool) count($field) : (trim($field) !== '');
-    }
+		// a valid object or bool value
+		if (is_object($input) || is_bool($input)) {
+			return true;
+		}
+
+		// a array with more than 1 entry
+		if (is_array($input)) {
+			return (count($input) > 0);
+		}
+
+		// something else?
+		if (!is_scalar($input)) {
+			throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+		}
+
+		return (trim((string)$input) !== '');
+	}
 }

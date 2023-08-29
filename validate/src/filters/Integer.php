@@ -1,26 +1,31 @@
 <?php
 
-namespace dmyers\validate\filters;
+namespace peel\validate\filters;
 
-use dmyers\validate\abstract\FilterAbstract;
-use dmyers\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\FilterAbstract;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\interfaces\FilterRuleInterface;
 
 class Integer extends FilterAbstract implements FilterRuleInterface
 {
-    public function filter(mixed $field, string $options = ''): mixed
+    public function filter(mixed $input, string $options = ''): mixed
     {
-        $pos = strpos($field, '.');
-
-        if ($pos !== false) {
-            $field = substr($field, 0, $pos);
+        if (!is_scalar($input) || is_bool($input)) {
+            throw new ValidationFailed('%s is not filterable.');
         }
 
-        $field  = preg_replace('/[^\-\+0-9]+/', '', $field);
-        $prefix = ($field[0] == '-' || $field[0] == '+') ? $field[0] : '';
-        $field  = $prefix . preg_replace('/[^0-9]+/', '', $field);
+        $pos = strpos((string)$input, '.');
 
-        $field = $this->length($field, $options);
+        if ($pos !== false) {
+            $input = substr($input, 0, $pos);
+        }
 
-        return $field;
+        $input  = preg_replace('/[^\-\+0-9]+/', '', $input);
+        $prefix = ($input[0] == '-' || $input[0] == '+') ? $input[0] : '';
+        $input  = $prefix . preg_replace('/[^0-9]+/', '', $input);
+
+        $input = $this->length($input, $options);
+
+        return $input;
     }
 }

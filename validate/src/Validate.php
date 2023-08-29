@@ -2,238 +2,326 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate;
+namespace peel\validate;
 
-use dmyers\validate\exceptions\InvalidValue;
-use Exception;
-use dmyers\validate\interfaces\ValidateInterface;
+use stdClass;
+use peel\validate\exceptions\InvalidValue;
+use peel\validate\exceptions\RuleNotFound;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\interfaces\ValidateInterface;
 
 class Validate implements ValidateInterface
 {
-    private static ValidateInterface $instance;
-
     protected array $config = [];
-
-    protected string $errorString = '';
-    protected string $errorHuman = '';
-    protected string $errorParams = '';
-    protected string $errorFieldValue = '';
-
-    protected array $fieldsData = [];
     protected array $errors = [];
-    protected array $groupedRules = [];
+
+    protected string $currentRule = '';
+    protected string $currentParams = '';
+
+    protected string $currentErrorMsg = '';
+    protected mixed $currentValue = null;
+
+    // flag for a rule to stop processing of further rules for a given field
+    protected bool $stopProcessing = false;
+
+    // defaults
+    protected string $dotSeparator = '.';
+    protected bool $throwErrorOnFailure = false;
+
+    protected array $isBool = [];
+    protected string $defaultErrorMsg = '%s is not valid.';
+
+    protected string $ruleSeparator = '|';
+    protected string $optionRightDelimiter = '[';
+    protected string $optionLeftDelimiter = ']';
+
     protected array $rules = [];
     protected array $filters = [];
 
-    private function __construct(array $config)
+    public function __construct(array $config)
     {
         $this->config = mergeDefaultConfig($config, __DIR__ . '/config/validate.php');
 
-        /* normalize */
+        $this->defaultErrorMsg = $this->config['defaultErrorMsg'] ?? $this->defaultErrorMsg;
+        $this->dotSeparator = $this->config['dotSeparator'] ?? $this->dotSeparator;
+        $this->ruleSeparator = $this->config['ruleSeparator'] ?? $this->ruleSeparator;
+
+        $this->throwErrorOnFailure = $this->config['throwErrorOnFailure'] ?? $this->throwErrorOnFailure;
+        $this->optionRightDelimiter = $this->config['optionRightDelimiter'] ?? $this->optionRightDelimiter;
+        $this->optionLeftDelimiter = $this->config['optionLeftDelimiter'] ?? $this->optionLeftDelimiter;
+
+        // these are considered valid boolean values
+        $this->isBool = $this->config['isTrue'] + $this->config['isFalse'];
+
+        // normalize
         $this->rules = \array_change_key_case($this->config['rules'], \CASE_LOWER);
         $this->filters = \array_change_key_case($this->config['filters'], \CASE_LOWER);
 
-        /* reset class */
+        // reset class
         $this->reset();
     }
 
     public static function getInstance(array $config): self
     {
-        if (!isset(self::$instance)) {
-            self::$instance = new self($config);
-        }
-
-        return self::$instance;
+        // fresh copy each time there is NOTHING carried over between instances
+        return new self($config);
     }
 
     public function reset(): self
     {
         $this->errors = [];
-        $this->fieldsData = [];
-        $this->groupedRules = [];
-        $this->errorString = '';
-        $this->errorHuman = '';
-        $this->errorParams = '';
-        $this->errorFieldValue = '';
+
+        $this->currentValue = null;
+        $this->currentErrorMsg = '';
+        $this->currentRule = '';
+        $this->currentParams = '';
+
+        $this->stopProcessing = false;
 
         return $this;
     }
 
-    public function attachRule(string $name, string $class): self
+    public function validateArray(array $input, array $ruleSet): self
     {
-        $this->rules[strtolower($name)] = $class;
-
-        return $this;
+        return $this->validateArrayObject($input, $ruleSet, true);
     }
 
-    public function attachFilter(string $name, string $class): self
+    public function validateObject(object $input, array $ruleSet): self
     {
-        $this->filters[strtolower($name)] = $class;
-
-        return $this;
+        return $this->validateArrayObject($input, $ruleSet, true);
     }
 
-    /* one up test */
-    public function isValid($input, string $rules): bool
+    public function validateSet(mixed $input, array $ruleSet): self
+    {
+        return $this->validateArrayObject($input, $ruleSet, false);
+    }
+
+    protected function validateArrayObject(mixed $input, array $ruleSet, bool $processDot = false): self
     {
         $this->reset();
 
-        $data = is_array($input) ? $input : ['input' => $input];
-        $rules = is_array($rules) ? $rules : ['input' => $rules];
+        $this->currentValue = $input;
 
-        return $this->data($data)->rules($rules)->run()->success();
-    }
-
-    /* one up filter */
-    public function filter($input, string $rules): mixed
-    {
-        $this->reset();
-
-        $data = is_array($input) ? $input : ['input' => $input];
-        $rules = is_array($rules) ? $rules : ['input' => $rules];
-
-        $this->data($data)->rules($rules)->run();
-
-        return $data['input'];
-    }
-
-    /**
-     * rule set
-     *
-     * $validate->fields('formgroup');
-     *
-     */
-    public function run(): self
-    {
-        return $this->runGroup('default');
-    }
-
-    public function runGroup(string $namedGroup): self
-    {
-        if (!isset($this->groupedRules[$namedGroup])) {
-            throw new InvalidValue('Validate rule group "' . $namedGroup . '" was not found.');
-        }
-
-        /* process each field and rule as a single rule, field, and human label */
-        foreach ($this->groupedRules[$namedGroup] as $rule) {
-            $this->single($rule['field'], $rule['rules'], $rule['human']);
-        }
-
-        return $this;
-    }
-
-    public function data(array &$fieldsData): self
-    {
-        $this->fieldsData = &$fieldsData;
-
-        return $this;
-    }
-
-    public function rules(array $rules, string $namedGroup = 'default'): self
-    {
-        foreach ($rules as $key => $value) {
-            if (is_array($value)) {
-                $rulesToUse = $value['rules'];
-                $fieldToUse = $value['field'];
-                $humanToUse = (isset($value['human'])) ? $value['human'] : $fieldToUse;
+        foreach ($ruleSet as $key => $rules) {
+            if (is_array($rules)) {
+                $human = $rules['human'];
+                $rules = $rules['rules'];
             } else {
-                $rulesToUse = $value;
-                $fieldToUse = $key;
-                $humanToUse = $key;
+                $human = $this->makeHumanLookNice(null, $key);
             }
 
-            $this->groupedRules[$namedGroup][$fieldToUse] = ['rules' => $rulesToUse, 'field' => $fieldToUse, 'human' => $humanToUse];
+            if ($processDot) {
+                $this->validateValueRules($this->getDotNotation($input, $key, $this->dotSeparator), $rules, $human);
+
+                $this->setDotNotation($input, $key, $this->currentValue, $this->dotSeparator);
+            } else {
+                $this->validateValueRules($input[$key], $rules, $human);
+
+                $input[$key] = $this->currentValue;
+            }
+        }
+
+        $this->currentValue = $input;
+
+        return $this->throwException();
+    }
+
+    public function validateValue(mixed $input, string $rules, ?string $human = null): self
+    {
+        $this->reset();
+
+        $this->validateValueRules($input, $rules, $this->makeHumanLookNice($human, 'Input'));
+
+        return $this->throwException();
+    }
+
+    protected function throwException(): self
+    {
+        if ($this->throwErrorOnFailure && $this->hasErrors()) {
+            throw new ValidationFailed($this->error(), $this->errors());
         }
 
         return $this;
     }
 
-    public function success(): bool
+    protected function validateValueRules(mixed $input, string $rules, string $human = null): self
     {
-        return count($this->errors) == 0;
+        $this->stopProcessing = false;
+
+        foreach (explode($this->ruleSeparator, $rules) as $rule) {
+            $this->validateValueRule($input, $rule, $human);
+
+            // if they trigger the stop processing flag then break from the foreach loop
+            if ($this->stopProcessing) {
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    protected function validateValueRule(mixed $input, string $rule, ?string $human = ''): self
+    {
+        $this->currentValue = $input;
+
+        try {
+            $this->currentValue = $this->callRule($input, $rule);
+        } catch (ValidationFailed $e) {
+            // if the rule or filter threw an error it is captured here
+            $this->addError($e->getMessage(), $human, $this->currentParams, $this->currentRule, (string)$this->currentValue);
+
+            // stop on first error
+            $this->stopProcessing = true;
+        }
+
+        return $this;
     }
 
     /**
-     * used by orange collectErrors
+     * single value
+     * single rule
      */
+    protected function callRule(mixed $value, string $rule): mixed
+    {
+        // default error
+        $this->currentErrorMsg = $this->defaultErrorMsg;
+
+        if (!empty($rule)) {
+            $params = '';
+
+            if (preg_match(';(?<rule>.*)' . preg_quote($this->optionLeftDelimiter) . '(?<param>.*)' . preg_quote($this->optionRightDelimiter) . ';', $rule, $matches, 0, 0)) {
+                $rule = $matches['rule'];
+                $params = $matches['param'];
+            }
+
+            $this->currentRule = $rule;
+            $this->currentParams = $this->makeParamsLookNice($params);
+
+            $rule = strtolower($rule);
+            $class = '';
+
+            if (isset($this->rules[$rule])) {
+                $class = $this->rules[$rule];
+            } elseif (isset($this->filters[$rule])) {
+                $class = $this->filters[$rule];
+            } else {
+                throw new RuleNotFound('Unknown Rule or Filter "' . $rule . '".');
+            }
+
+            // make instance - this should autoload
+            $instance = new $class($this->config, $this);
+
+            switch (get_parent_class($instance)) {
+                case 'peel\validate\abstract\ValidationRuleAbstract':
+                    // throws an error on fail
+                    $instance->isValid($value, $params);
+                    break;
+                case 'peel\validate\abstract\FilterAbstract':
+                    // uses the returned value
+                    $value = $instance->filter($value, $params);
+                    break;
+                default:
+                    throw new InvalidValue('Unknown Type "' . get_parent_class($instance) . '".');
+            }
+        }
+
+        return $value;
+    }
+
+    public function addError(string $errorMsg, string $human, string $params, string $rule, string $value): self
+    {
+        $this->errors[] = sprintf($errorMsg, $human, $rule, $params, $value);
+
+        return $this;
+    }
+
+    public function value(): mixed
+    {
+        return $this->currentValue;
+    }
+
+    public function values(): mixed
+    {
+        return $this->currentValue;
+    }
+
+    public function stopProcessing(): self
+    {
+        $this->stopProcessing = true;
+
+        return $this;
+    }
+
+    public function throwErrorOnFailure(): self
+    {
+        $this->throwErrorOnFailure = true;
+
+        return $this;
+    }
+
+    /**
+     * Send in NULL if you want to turn "off" dot notation "drill down" into your input
+     * 
+     * Send in something else if for some reason you would like to 
+     * use another separator to indicate how to drill down to the next level
+     */
+    public function changeDotNotationSeparator(string $dot): self
+    {
+        $this->dotSeparator = $dot;
+
+        return $this;
+    }
+
+    public function disableDotNotation(): self
+    {
+        return $this->changeDotNotationSeparator('');
+    }
+
+    public function hasError(): bool
+    {
+        return (count($this->errors) > 0);
+    }
+
+    public function hasErrors(): bool
+    {
+        return (count($this->errors) > 0);
+    }
+
     public function errors(): array
     {
-        return array_values($this->errors);
+        return $this->errors;
     }
 
     public function error(): string
     {
-        $errors = array_values($this->errors);
+        $error = '';
 
-        return (isset($errors[0])) ? $errors[0] : '';
+        if (isset($this->errors[0])) {
+            $error = $this->errors[0];
+        }
+
+        return $error;
     }
 
-    /**
-     * Protected
-     */
+    /* protected */
 
-    protected function single(string $key, string $rules, string $human = null): self
+    protected function makeHumanLookNice(?string $human, string $key): string
     {
-        $rules = explode('|', $rules);
 
-        /* do we have any rules? */
-        if (count($rules)) {
-            /* field value before any validations / filters */
-            if (!isset($this->fieldsData[$key])) {
-                $this->fieldsData[$key] = null;
-            }
+        // do we have a human readable field name? if not then try to make one
+        $key = empty($key) ? 'Input' : $key;
 
-            $this->errorFieldValue =  (string)$this->fieldsData[$key];
-
-            foreach ($rules as $rule) {
-                if ($this->processRule($key, strtolower($rule), $human) === false) {
-                    break; /* break from for each */
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    protected function processRule(string $key, string $rule, string $human): bool
-    {
-        /* no rule? exit processing of the $rules array */
-        if (empty($rule)) {
-            return false;
-        }
-
-        /* do we have this special rule? */
-        if ($rule == 'allow_empty' && empty($this->fieldsData[$key])) {
-            return false;
-        }
-
-        $param = '';
-
-        if (preg_match(';(?<rule>.*)\[(?<param>.*)\];', $rule, $matches, 0, 0)) {
-            $rule = $matches['rule'];
-            $param = $matches['param'];
-        }
-
-        $this->errorHuman = $this->makeHumanLookNice($human, $rule);
-        $this->errorParams = $this->makeParamsLookNice($param);
-
-        return $this->processSingle($key, $rule, $param);
-    }
-
-    protected function makeHumanLookNice(string $human, string $rule): string
-    {
-        /* do we have a human readable field name? if not then try to make one */
-        return ($human) ? $human : strtolower(str_replace('_', ' ', $rule));
+        return $human ?? strtolower(str_replace('_', ' ', $key));
     }
 
     protected function makeParamsLookNice(string $param): string
     {
-        /* try to format the parameters into something human readable incase they need this in there error message  */
+        // try to format the parameters into something human readable incase they need this in there error message
         if (strpos($param, ',') !== false) {
             $errorParams = str_replace(',', ', ', $param);
 
-            if (($pos = strrpos($this->errorParams, ', ')) !== false) {
-                $errorParams = substr_replace($this->errorParams, ' or ', $pos, 2);
+            if (($pos = strrpos($this->currentParams, ', ')) !== false) {
+                $errorParams = substr_replace($this->currentParams, ' or ', $pos, 2);
             }
         } else {
             $errorParams = $param;
@@ -242,51 +330,66 @@ class Validate implements ValidateInterface
         return $errorParams;
     }
 
-    protected function processSingle(string $fieldsKey, string $rule, string $param = null): bool
+    /**
+     * drill into array or object
+     */
+    public function getDotNotation(mixed $input, string $dotNotation, string $dotSeparator = '.', $default = null): mixed
     {
-        $success = false;
-        $rule = strtolower($rule);
-        $class = '';
-        $type = null;
-        /* default error */
-        $errorString = '%s is not valid.';
+        if (!empty($dotNotation) && !empty($dotSeparator)) {
+            $keys = explode($dotSeparator, $dotNotation);
 
-        if (isset($this->filters[$rule])) {
-            $class = $this->filters[$rule];
-            $type = 'filter';
-        } elseif (isset($this->rules[$rule])) {
-            $class = $this->rules[$rule];
-            $type = 'rule';
-        } else {
-            throw new \Exception('Unknown Rule or Filter "' . $rule . '".');
-        }
-
-        /* make instance */
-        $instance = new $class();
-
-        switch ($type) {
-            case 'rule':
-                $success = $instance->fields($this->fieldsData)->errorString($errorString)->isValid($this->fieldsData[$fieldsKey], $param);
-
-                if ($success === false) {
-                    /**
-                     * sprintf argument 1 human name for field
-                     * sprintf argument 2 human version of options (computer generated)
-                     * sprintf argument 3 field value
-                     */
-                    $this->errors[$this->errorHuman] = sprintf($errorString, $this->errorHuman, $this->errorParams, $this->errorFieldValue);
+            foreach ($keys as $key) {
+                if (is_array($input)) {
+                    if (isset($input[$key])) {
+                        $input = $input[$key];
+                    } else {
+                        return $default;
+                    }
+                } elseif (is_object($input)) {
+                    if (isset($input->$key)) {
+                        $input = $input->$key;
+                    } else {
+                        return $default;
+                    }
+                } else {
+                    return $default;
                 }
-                break;
-            case 'filter':
-                $this->fieldsData[$fieldsKey] = $instance->filter($this->fieldsData[$fieldsKey], $param);
-
-                /* filters never fail */
-                $success = true;
-                break;
-            default:
-                throw new Exception('Unknown Type "' . $instance->type() . '".');
+            }
         }
 
-        return $success;
+        return $input;
+    }
+
+    public function setDotNotation(mixed &$input, string $dotNotation, mixed $value, string $dotSeparator = '.')
+    {
+        if (!empty($dotNotation) && !empty($dotSeparator)) {
+            $keys = explode($dotSeparator, $dotNotation);
+
+            while (count($keys) > 1) {
+                $key = array_shift($keys);
+
+                // set if missing
+                if (is_object($input)) {
+                    if (!isset($input->$key)) {
+                        $input->$key = new StdClass;
+                    }
+
+                    $input = &$input->$key;
+
+                    $key = reset($keys);
+
+                    $input->$key = $value;
+                } else {
+                    if (!isset($input[$key])) {
+                        $input[$key] = [];
+                    }
+
+                    $input = &$input[$key];
+
+                    $key = reset($keys);
+                    $input[$key] = $value;
+                }
+            }
+        }
     }
 }

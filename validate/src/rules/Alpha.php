@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\rules;
+namespace peel\validate\rules;
 
-use dmyers\validate\abstract\ValidationRuleAbstract;
-use dmyers\validate\interfaces\ValidationRuleInterface;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\abstract\ValidationRuleAbstract;
+use peel\validate\interfaces\ValidationRuleInterface;
 
-class Alpha extends ValidationRuleAbstract implements ValidationRuleInterface
+class alpha extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-    public function isValid(mixed $field, string $options = ''): bool
+    public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alphabetical characters.';
-
-        return (bool) ctype_alpha($field);
+        if (!is_scalar($input) || is_bool($input) || $input === '' || !ctype_alpha($input)) {
+            throw new ValidationFailed('%s may only contain alpha characters.');
+        }
     }
 }

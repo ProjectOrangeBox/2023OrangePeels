@@ -1,21 +1,26 @@
 <?php
 
-namespace dmyers\validate\filters;
+namespace peel\validate\filters;
 
-use dmyers\validate\abstract\FilterAbstract;
-use dmyers\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\FilterAbstract;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\interfaces\FilterRuleInterface;
 
 class Slug extends FilterAbstract implements FilterRuleInterface
 {
-    public function filter(mixed $field, string $options = ''): mixed
+    public function filter(mixed $input, string $options = ''): mixed
     {
-        $field = preg_replace('~[^\pL\d]+~u', '-', $field);
-        $field = iconv('utf-8', 'us-ascii//TRANSLIT', $field);
-        $field = preg_replace('~[^-\w]+~', '', $field);
-        $field = trim($field, '-');
-        $field = preg_replace('~-+~', '-', $field);
-        $field = strtolower($field);
+        if (!is_scalar($input) || is_bool($input)) {
+            throw new ValidationFailed('%s is not filterable.');
+        }
 
-        return $field;
+        $input = preg_replace('~[^\pL\d]+~u', '-', (string)$input);
+        $input = iconv('utf-8', 'us-ascii//TRANSLIT', $input);
+        $input = preg_replace('~[^-\w]+~', '', $input);
+        $input = trim($input, '-');
+        $input = preg_replace('~-+~', '-', $input);
+        $input = strtolower($input);
+
+        return $input;
     }
 }

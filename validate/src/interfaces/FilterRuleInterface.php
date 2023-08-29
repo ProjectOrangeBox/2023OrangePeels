@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\interfaces;
+namespace peel\validate\interfaces;
 
 interface FilterRuleInterface
 {
-    public function filter(mixed $field, string $options = ''): mixed;
+    public function filter(mixed $input, string $options = ''): mixed;
 }

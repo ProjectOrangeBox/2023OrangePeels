@@ -42,4 +42,9 @@ class unitTestHelper extends TestCase
     {
         return preg_replace('/[\x00-\x1F\x7F]/u', '', $string);
     }
+
+    protected function ve($arg): void
+    {
+        var_export($arg);
+    }
 }

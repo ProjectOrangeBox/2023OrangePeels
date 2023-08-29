@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\abstract;
+namespace peel\validate\abstract;
 
-abstract class FilterAbstract
+use peel\validate\abstract\ValidationRuleAbstract;
+use peel\validate\interfaces\FilterRuleInterface;
+
+abstract class FilterAbstract extends ValidationRuleAbstract implements FilterRuleInterface
 {
-    protected array $trueArray = [1, '1', 'y', 'on', 'yes', 't', 'true', true];
-    protected array $falseArray = [0, '0', 'n', 'off', 'no', 'f', 'false', false];
-
-    public function filter(mixed $field, string $options = ''): mixed
+    // must return "filtered" value
+    public function filter(mixed $input, string $options = ''): mixed
     {
-        return $field;
+        return $input;
     }
 
     protected function length($field, $length = null): mixed

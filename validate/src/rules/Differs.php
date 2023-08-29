@@ -2,17 +2,30 @@
 
 declare(strict_types=1);
 
-namespace dmyers\validate\rules;
+namespace peel\validate\rules;
 
-use dmyers\validate\abstract\ValidationRuleAbstract;
-use dmyers\validate\interfaces\ValidationRuleInterface;
+use peel\validate\exceptions\ValidationFailed;
+use peel\validate\abstract\ValidationRuleAbstract;
+use peel\validate\interfaces\ValidationRuleInterface;
 
 class Differs extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-    public function isValid(mixed $field, string $options = ''): bool
+    public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s must differ from %s.';
 
-        return !(isset($this->fieldsData[$options]) && $this->fieldsData[$options] === $field);
+        if (!is_scalar($input) || is_bool($input) || !is_scalar($options)) {
+            throw new ValidationFailed('%s may only contain a scalar value.');
+        }
+
+        //$this->errorString = '%s must differ from %s.';
+        $currentValues = $this->parent->values();
+
+        if (!isset($currentValues[$options])) {
+            throw new ValidationFailed('Could not find the field ' . $options . '.');
+        }
+
+        if ($currentValues[$options] !== $input) {
+            throw new ValidationFailed('The fields don\'t match.');
+        }
     }
 }
