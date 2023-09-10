@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace peel\validate\rules;
 
-use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 use peel\validate\interfaces\ValidationRuleInterface;
 

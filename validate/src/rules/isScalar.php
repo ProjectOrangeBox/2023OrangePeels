@@ -10,18 +10,8 @@ use peel\validate\interfaces\ValidationRuleInterface;
 
 class isScalar extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-	public function isValid(mixed $input, string $options = ''): void
-	{
-		$this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
-
-		if (!is_scalar($input) || $input === '') {
-			throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-		}
-
-		if (is_bool($input)) {
-			return true;
-		}
-
-		return true;
-	}
+    public function isValid(mixed $input, string $options = ''): void
+    {
+        $this->isStringNumberBoolean($input);
+    }
 }

@@ -12,7 +12,9 @@ class alphaNumeric extends ValidationRuleAbstract implements ValidationRuleInter
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        if (!is_scalar($input) || is_bool($input) || $input === '' || !ctype_alnum((string) $input)) {
+        $this->isStringNumberEmpty($input);
+
+        if (!ctype_alnum($input)) {
             throw new ValidationFailed('%s may only contain alpha characters and numbers.');
         }
     }

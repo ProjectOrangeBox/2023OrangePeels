@@ -12,12 +12,10 @@ class isBool extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumberBooleanEmpty($input);
 
-        if (!is_scalar($input) || $input === '') {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (!$this->isBool($input)) {
+            throw new ValidationFailed('%s is not considered a boolean value.');
         }
-
-        return in_array($input, $this->isBool, true);
     }
 }

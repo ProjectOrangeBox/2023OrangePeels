@@ -10,9 +10,7 @@ class ConvertDate extends FilterAbstract implements FilterRuleInterface
 {
     public function filter(mixed $input, string $options = ''): mixed
     {
-        if (!is_scalar($input) || is_bool($input)) {
-            throw new ValidationFailed('%s is not filterable.');
-        }
+        $this->isStringNumber($input);
 
         $options = ($options) ? $options : 'Y-m-d H:i:s';
 

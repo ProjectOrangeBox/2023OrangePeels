@@ -1,15 +1,16 @@
+#!/usr/bin/env php
 <?php
 
 $filters = [];
 $rules = [];
 
-foreach (glob(__DIR__.'/../src/rules/*.php') as $file) {
+foreach (glob(__DIR__.'/../../src/rules/*.php') as $file) {
     $bn = basename($file,'.php');
 
     $rules[$bn] = '\peel\validate\rules\\'.$bn;
 }
 
-foreach (glob(__DIR__.'/../src/filters/*.php') as $file) {
+foreach (glob(__DIR__.'/../../src/filters/*.php') as $file) {
     $bn = basename($file,'.php');
 
     $filters[$bn] = '\peel\validate\filters\\'.$bn;

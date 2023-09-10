@@ -12,8 +12,14 @@ class Matches extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s does not match %s.';
+        $currentValues = $this->parent->values();
 
-        return isset($this->fieldsData[$options]) ? ($input === $this->fieldsData[$options]) : false;
+        if (!isset($currentValues[$options])) {
+            throw new ValidationFailed('Could not find the field ' . $options . '.');
+        }
+
+        if ($currentValues[$options] !== $input) {
+            throw new ValidationFailed('%s does not match %s.');
+        }
     }
 }

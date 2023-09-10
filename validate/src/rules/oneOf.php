@@ -12,12 +12,10 @@ class oneOf extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumberEmpty($input);
 
-        if (!is_scalar($input) || is_bool($input) || $input === '') {
-		throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-	}
-
-	return in_array((string)$input, explode(',', $options));
+        if (!in_array($input, explode(',', $options), true)) {
+            throw new ValidationFailed('%s is not one of %s.');
+        }
     }
 }

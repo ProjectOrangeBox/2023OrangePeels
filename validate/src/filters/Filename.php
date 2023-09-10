@@ -10,9 +10,7 @@ class Filename extends FilterAbstract implements FilterRuleInterface
 {
     public function filter(mixed $input, string $options = ''): mixed
     {
-        if (!is_scalar($input) || is_bool($input)) {
-            throw new ValidationFailed('%s is not filterable.');
-        }
+        $this->isStringNumber($input);
 
         /*
         only word characters - from a-z, A-Z, 0-9, including the _ (underscore) character
@@ -23,6 +21,6 @@ class Filename extends FilterAbstract implements FilterRuleInterface
         $input = \preg_replace('#_+#', '_', $input);
 
         /* options is max length - filter is in orange core */
-        return $this->length($input, $options);
+        return $this->length($input, $options)->return();
     }
 }

@@ -9,46 +9,56 @@ use peel\validate\interfaces\FilterRuleInterface;
 
 abstract class FilterAbstract extends ValidationRuleAbstract implements FilterRuleInterface
 {
+    private mixed $input = null;
+
     // must return "filtered" value
     public function filter(mixed $input, string $options = ''): mixed
     {
         return $input;
     }
 
-    protected function length($field, $length = null): mixed
+    protected function return(): mixed
+    {
+        return $this->input;
+    }
+
+    protected function length($input, $length = null): self
     {
         if (is_numeric($length)) {
             $length = (int) $length;
             if ($length > 0) {
-                $field = substr($field, 0, $length);
+                $this->input = substr($input, 0, $length);
             }
         }
 
-        return $field;
+        return $this;
     }
 
-    protected function human($field): mixed
+    protected function human($input): self
     {
-        return preg_replace("/[^\\x20-\\x7E]/mi", '', $field);
+        $this->input = preg_replace("/[^\\x20-\\x7E]/mi", '', $input);
+
+        return $this;
     }
 
-    protected function humanPlus($field): mixed
+    protected function humanPlus($input): self
     {
-        return preg_replace("/[^\\x20-\\x7E\\n\\t\\r]/mi", '', $field);
+        $this->input = preg_replace("/[^\\x20-\\x7E\\n\\t\\r]/mi", '', $input);
+
+        return $this;
     }
 
-    protected function trim($field)
+    protected function trim($input): self
     {
-        return trim($field);
+        $this->input = trim($input);
+
+        return $this;
     }
 
-    protected function strip($field, $strip)
+    protected function strip($input, $strip): self
     {
-        return str_replace(str_split($strip), '', $field);
-    }
+        $this->input = str_replace(str_split($strip), '', $input);
 
-    protected function isBool($field): bool
-    {
-        return (in_array(strtolower($field), array_merge($this->trueArray, $this->falseArray), true)) ? true : false;
+        return $this;
     }
 }

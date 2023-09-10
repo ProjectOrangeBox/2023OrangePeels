@@ -8,16 +8,14 @@ use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 use peel\validate\interfaces\ValidationRuleInterface;
 
-class timezone extends ValidationRuleAbstract implements ValidationRuleInterface
+class validTimezone extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumber($input);
 
-        if (!is_scalar($input)) {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (!in_array($input, timezone_identifiers_list(), true)) {
+            throw new ValidationFailed('%s is not a valid timezone.');
         }
-
-        return in_array((string)$input, timezone_identifiers_list(), true);
     }
 }

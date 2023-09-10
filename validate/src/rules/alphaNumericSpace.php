@@ -12,7 +12,9 @@ class alphaNumericSpace extends ValidationRuleAbstract implements ValidationRule
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        if (!is_scalar($input) || is_bool($input) || $input === '' || preg_match('/^[A-Z0-9 ]+$/i', (string)$input) !== 1) {
+        $this->isStringNumberEmpty($input);
+
+        if (preg_match('/^[A-Z0-9 ]+$/i', $input) !== 1) {
             throw new ValidationFailed('%s may only contain alpha characters, numbers, and spaces.');
         }
     }

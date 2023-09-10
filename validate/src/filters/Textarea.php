@@ -10,13 +10,8 @@ class Textarea extends FilterAbstract implements FilterRuleInterface
 {
     public function filter(mixed $input, string $options = ''): mixed
     {
-        if (!is_scalar($input) || is_bool($input)) {
-            throw new ValidationFailed('%s is not filterable.');
-        }
+        $this->isStringNumber($input);
 
-        $input = $this->humanPlus((string)$input);
-        $input = $this->length($input, $options);
-
-        return $input;
+        return $this->humanPlus((string)$input)->length($input, $options)->return();
     }
 }

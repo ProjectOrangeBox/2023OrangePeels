@@ -12,12 +12,11 @@ class lessThan extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumberEmpty($input);
+        $this->isInteger($options);
 
-        if (!is_scalar($input) || !is_numeric($options) || !is_numeric($input)) {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if ($input < $options) {
+            throw new ValidationFailed('%s is not less than %s.');
         }
-
-        return ($input < $options);
     }
 }

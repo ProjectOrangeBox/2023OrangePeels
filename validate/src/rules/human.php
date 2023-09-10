@@ -12,12 +12,10 @@ class human extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumberEmpty($input);
 
-        if (!is_scalar($input) || is_bool($input)) {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (preg_replace('/[\x00-\x1F\x7F]/u', '', $input) !== $input) {
+            throw new ValidationFailed('%s contains invalid characters.');
         }
-
-        return (bool) (preg_replace('/[\x00-\x1F\x7F]/u', '', (string)$input) === (string)$input);
     }
 }

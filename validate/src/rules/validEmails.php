@@ -10,24 +10,14 @@ use peel\validate\interfaces\ValidationRuleInterface;
 
 class validEmails extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-	public function isValid(mixed $input, string $options = ''): void
-	{
-		$this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+    public function isValid(mixed $input, string $options = ''): void
+    {
+        $this->isStringNumber($input);
 
-		if (!is_scalar($input) || $input === '' || is_bool($input)) {
-			throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-		}
-
-		$success = false;
-
-		foreach (explode(',', $input) as $email) {
-			if (trim($email) !== '' && $this->validEmail(trim($email), '') === false) {
-				// break out of foreach
-				break;
-			}
-			$success = true;
-		}
-
-		return $success;
-	}
+        foreach (explode(',', $input) as $email) {
+            if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                throw new ValidationFailed('%s contains a invalid email.');
+            }
+        }
+    }
 }

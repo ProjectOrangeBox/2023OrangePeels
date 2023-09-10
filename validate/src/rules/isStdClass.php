@@ -12,12 +12,8 @@ class isStdClass extends ValidationRuleAbstract implements ValidationRuleInterfa
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
-
-        if (is_scalar($input) || is_array($input) || is_null($input)) {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (!is_object($input) || get_class($input) == stdClass::class) {
+            throw new ValidationFailed('%s is not a Standard Class.');
         }
-
-        return (get_class($input) == stdClass::class);
     }
 }

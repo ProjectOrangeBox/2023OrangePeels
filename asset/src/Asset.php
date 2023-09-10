@@ -24,7 +24,7 @@ class Asset implements AssetInterface
         $this->priority = new Priority();
         $this->data = $data;
 
-        if (defined('PAGE_MIN')) {
+        if (!defined('PAGE_MIN')) {
             define('PAGE_MIN', $this->config['page min']);
         }
 

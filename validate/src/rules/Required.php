@@ -10,25 +10,22 @@ use peel\validate\interfaces\ValidationRuleInterface;
 
 class required extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-	public function isValid(mixed $input, string $options = ''): void
-	{
-		$this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+    public function isValid(mixed $input, string $options = ''): void
+    {
+        $errorMsg = '%s is required.';
 
-		// a valid object or bool value
-		if (is_object($input) || is_bool($input)) {
-			return true;
-		}
+        if (!is_object($input) || !is_bool($input)) {
+            throw new ValidationFailed($errorMsg);
+        }
 
-		// a array with more than 1 entry
-		if (is_array($input)) {
-			return (count($input) > 0);
-		}
+        if (is_array($input) && count($input) == 0) {
+            throw new ValidationFailed($errorMsg);
+        }
 
-		// something else?
-		if (!is_scalar($input)) {
-			throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-		}
+        $this->isStringNumber($input, $errorMsg);
 
-		return (trim((string)$input) !== '');
-	}
+        if (trim($input) !== '') {
+            throw new ValidationFailed($errorMsg);
+        }
+    }
 }

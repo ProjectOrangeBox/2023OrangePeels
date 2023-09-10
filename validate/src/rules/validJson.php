@@ -10,22 +10,22 @@ use peel\validate\interfaces\ValidationRuleInterface;
 
 class validJson extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-	public function isValid(mixed $input, string $options = ''): void
-	{
-		$this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+    public function isValid(mixed $input, string $options = ''): void
+    {
+        $this->isStringNumber($input);
 
-		if (!is_scalar($input)) {
-			throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-		}
+        // level 1 because single scalar values are actually valid?
+        $first = substr(trim($input), 0, 1);
 
-		$input = (string)$input;
+        if ($first !== '[' && $first !== '{') {
+            throw new ValidationFailed('%s is not a valid JSON.1');
+        }
 
-		if (substr($input, 0, 1) != '{' && substr($input, -1) != '}') {
-			throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-		}
+        // level 2
+        $json = json_decode($input);
 
-		json_decode($input);
-
-		return (json_last_error() === JSON_ERROR_NONE);
-	}
+        if (!is_object($json) && !is_array($json)) {
+            throw new ValidationFailed('%s is not a valid JSON.3');
+        }
+    }
 }

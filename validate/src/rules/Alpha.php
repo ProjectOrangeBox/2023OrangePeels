@@ -12,7 +12,9 @@ class alpha extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        if (!is_scalar($input) || is_bool($input) || $input === '' || !ctype_alpha($input)) {
+        $this->isStringNumberEmpty($input);
+
+        if (!ctype_alpha($input)) {
             throw new ValidationFailed('%s may only contain alpha characters.');
         }
     }

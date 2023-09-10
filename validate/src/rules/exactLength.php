@@ -12,7 +12,10 @@ class exactLength extends ValidationRuleAbstract implements ValidationRuleInterf
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        if (!is_scalar($input) || is_bool($input) || !is_numeric($options) || (int)$options !== strlen((string)$input)) {
+        $this->isStringNumberEmpty($input);
+        $this->isInteger($options);
+
+        if ($options !== strlen($input)) {
             throw new ValidationFailed('%s is not %s in length.');
         }
     }

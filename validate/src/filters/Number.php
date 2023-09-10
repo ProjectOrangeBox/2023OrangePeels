@@ -10,11 +10,9 @@ class Number extends FilterAbstract implements FilterRuleInterface
 {
     public function filter(mixed $input, string $options = ''): mixed
     {
-        if (!is_scalar($input) || is_bool($input)) {
-            throw new ValidationFailed('%s is not filterable.');
-        }
+        $this->isStringNumber($input);
 
-        $input  = preg_replace('/[^\-\+0-9.]+/', '', (string)$input);
+        $input = preg_replace('/[^\-\+0-9.]+/', '', (string)$input);
 
         $prefix = '';
 
@@ -23,8 +21,7 @@ class Number extends FilterAbstract implements FilterRuleInterface
         }
 
         $input = $prefix . preg_replace('/[^0-9.]+/', '', $input);
-        $input = $this->length($input, $options);
 
-        return $input;
+        return $this->length($input, $options)->return();
     }
 }

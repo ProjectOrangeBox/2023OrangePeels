@@ -12,20 +12,14 @@ class Differs extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-
-        if (!is_scalar($input) || is_bool($input) || !is_scalar($options)) {
-            throw new ValidationFailed('%s may only contain a scalar value.');
-        }
-
-        //$this->errorString = '%s must differ from %s.';
         $currentValues = $this->parent->values();
 
         if (!isset($currentValues[$options])) {
             throw new ValidationFailed('Could not find the field ' . $options . '.');
         }
 
-        if ($currentValues[$options] !== $input) {
-            throw new ValidationFailed('The fields don\'t match.');
+        if ($currentValues[$options] === $input) {
+            throw new ValidationFailed('%s matches %s.');
         }
     }
 }

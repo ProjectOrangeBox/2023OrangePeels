@@ -12,12 +12,10 @@ class isFloat extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumberEmpty($input);
 
-        if (!is_scalar($input) || is_bool($input) || $input === '') {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (preg_match('/\A[-+]?\d{0,}\.?\d+\z/', $input) !== 1) {
+            throw new ValidationFailed('%s is not a valid floating point value.');
         }
-
-        return (bool) preg_match('/\A[-+]?\d{0,}\.?\d+\z/', $input ?? '');
     }
 }

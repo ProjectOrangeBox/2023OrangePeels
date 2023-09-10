@@ -12,12 +12,10 @@ class validBase64 extends ValidationRuleAbstract implements ValidationRuleInterf
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumber($input);
 
-        if (!is_scalar($input) || $input === '' || is_bool($input)) {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (base64_decode($input, true) === false) {
+            throw new ValidationFailed('%s is not a valid base64 value.');
         }
-
-        return (bool)(base64_encode(base64_decode($input)) === $input);
     }
 }

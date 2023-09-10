@@ -12,12 +12,6 @@ class isString extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
-
-        if (!is_scalar($input) || is_bool($input) || $input === '') {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-        }
-
-        return is_string($input);
+        $this->isStringNumberEmpty($input);
     }
 }

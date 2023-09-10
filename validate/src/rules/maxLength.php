@@ -12,12 +12,11 @@ class maxLength extends ValidationRuleAbstract implements ValidationRuleInterfac
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumberEmpty($input);
+        $this->isInteger($options);
 
-        if (!is_scalar($input) || is_bool($input) || !is_numeric($options)) {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (strlen($input) > $options) {
+            throw new ValidationFailed('%s is longer than %s.');
         }
-
-        return ((int)$options >= strlen((string)$input));
     }
 }

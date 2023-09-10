@@ -10,18 +10,13 @@ use peel\validate\interfaces\ValidationRuleInterface;
 
 class regexMatch extends ValidationRuleAbstract implements ValidationRuleInterface
 {
-	public function isValid(mixed $input, string $options = ''): void
-	{
-		$this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+    public function isValid(mixed $input, string $options = ''): void
+    {
+        $this->isStringNumberEmpty($input);
+        $this->isRequired($options);
 
-		if (!is_scalar($input) || is_bool($input)) {
-			throw new ValidationFailed('%s may only contain hex characters a-f0-9');
-		}
-
-		if (strpos($options, '/') !== 0) {
-			$options = "/{$options}/";
-		}
-
-		return (bool) preg_match($options, $input);
-	}
+        if (preg_match($options, $input) !== 1) {
+            throw new ValidationFailed('Your regular expression for %s does not match.');
+        }
+    }
 }

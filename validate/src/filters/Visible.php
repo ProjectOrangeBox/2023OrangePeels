@@ -10,13 +10,8 @@ class Visible extends FilterAbstract implements FilterRuleInterface
 {
     public function filter(mixed $input, string $options = ''): mixed
     {
-        if (!is_scalar($input) || is_bool($input)) {
-            throw new ValidationFailed('%s is not filterable.');
-        }
+        $this->isStringNumber($input);
 
-        $input = preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', (string)$input);
-        $input = $this->length($input, $options);
-
-        return $input;
+        return $this->length(preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', (string)$input), $options)->return();
     }
 }

@@ -1,0 +1,1687 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Test Documentation</title>
+        <style>
+            body {
+                text-rendering: optimizeLegibility;
+                font-family: Source SansSerif Pro, Arial, sans-serif;
+                font-variant-ligatures: common-ligatures;
+                font-kerning: normal;
+                margin-left: 2rem;
+                background-color: #fff;
+                color: #000;
+            }
+
+            body > ul > li {
+                font-size: larger;
+            }
+
+            h2 {
+                font-size: larger;
+                text-decoration-line: underline;
+                text-decoration-thickness: 2px;
+                margin: 0;
+                padding: 0.5rem 0;
+            }
+
+            ul {
+                list-style: none;
+                margin: 0 0 2rem;
+                padding: 0 0 0 1rem;
+                text-indent: -1rem;
+            }
+
+            .success:before {
+                color: #4e9a06;
+                content: '✓';
+                padding-right: 0.5rem;
+            }
+
+            .defect {
+                color: #a40000;
+            }
+
+            .defect:before {
+                color: #a40000;
+                content: '✗';
+                padding-right: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>filter Convert Date</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Filename</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="defect">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>filter Human</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="defect">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>filter Input</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Integer</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Length</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="defect">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>filter Map</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Number</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="defect">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>filter Slug</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Str</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Str To Lower</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Str To Upper</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Textarea</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Trim</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>filter Visible</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="defect">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Allow Empty</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="defect">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="defect">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="defect">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Alpha Dash</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Alpha Numeric Dash</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Alpha Numeric Space</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Alpha Numeric</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Alpha Space</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Alpha</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Differs</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Exact Length</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Greater Than Equal To</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Greater Than</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Human</h2>
+        <ul>
+            <li class="defect">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Is Array</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="defect">Array</li>
+            <li class="defect">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Bool</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="defect">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Class</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Decimal</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="success">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Float</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="success">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Hex</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Is Integer</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Lowercase</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="defect">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Is Natural No Zero</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Natural</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Numeric</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="defect">Integer</li>
+            <li class="success">Hex</li>
+            <li class="defect">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="defect">Zero</li>
+            <li class="defect">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Scalar</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="defect">Letters</li>
+            <li class="defect">Uppercase</li>
+            <li class="defect">Lowercase</li>
+            <li class="defect">Uuid</li>
+            <li class="defect">Email</li>
+            <li class="defect">Emails</li>
+            <li class="defect">Base 64</li>
+            <li class="defect">Ip</li>
+            <li class="defect">Url</li>
+            <li class="defect">Oneof</li>
+        </ul>
+        <h2>rule Is Std Class</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is String</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Is Uppercase</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Less Than Equal To</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Less Than</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Matches</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Max Length</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Min Length</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule One Of</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Regex Match</h2>
+        <ul>
+            <li class="success">String match</li>
+            <li class="success">String no match</li>
+        </ul>
+        <h2>rule Required</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid Base64</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid Date</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid Email</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid Emails</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid IP</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid Json</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">Json object</li>
+            <li class="success">Json array</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid Timezone</h2>
+        <ul>
+            <li class="success">Time zone</li>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid URL</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+        <h2>rule Valid Uuid</h2>
+        <ul>
+            <li class="success">Empty</li>
+            <li class="success">String</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Integer</li>
+            <li class="success">Hex</li>
+            <li class="success">Decimal</li>
+            <li class="success">Std class</li>
+            <li class="success">Array</li>
+            <li class="success">Assoc array</li>
+            <li class="success">True</li>
+            <li class="success">False</li>
+            <li class="success">Zero</li>
+            <li class="success">One</li>
+            <li class="success">Null</li>
+            <li class="success">Letters</li>
+            <li class="success">Uppercase</li>
+            <li class="success">Lowercase</li>
+            <li class="success">Uuid</li>
+            <li class="success">Email</li>
+            <li class="success">Emails</li>
+            <li class="success">Base 64</li>
+            <li class="success">Ip</li>
+            <li class="success">Url</li>
+            <li class="success">Oneof</li>
+        </ul>
+    </body>
+</html>

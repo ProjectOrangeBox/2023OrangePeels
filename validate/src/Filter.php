@@ -88,7 +88,7 @@ class Filter implements FilterInterface
     public function remapInput(string $method, string $mapping): array
     {
         $input = $this->pickFromInput($method, null, null);
-        
+
         if (!empty($mapping)) {
             $input = $this->remap($input, $mapping);
 
@@ -108,16 +108,16 @@ class Filter implements FilterInterface
      * Rename array key "B" to array key "A" : A<B
      * Copy from array key "A" into array key "B" : A=B
      * Delete array key "A" : A>#
-     * 
+     *
      * Perform "calculation" (like excel)
      * functions called must be global or called statically
      *
      * A<=concat($fielda,' ',$fieldb)
      * B<=trim($fieldb)
      * =substr($fielda,0,4)>A
-     * 
+     *
      * the variables are the "extracted" keys from the $input
-     * 
+     *
      * so if your input is $input = ['foo'=>1,'bar'=>2];
      * then in your formula $foo and $bar are available
      *
@@ -185,7 +185,7 @@ class Filter implements FilterInterface
 
     /**
      * eval inside a closure (ie. jailed)
-     * 
+     *
      * but still only use developer formulas
      */
     protected function formula($logic, $arguments): mixed

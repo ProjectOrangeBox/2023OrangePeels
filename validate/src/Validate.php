@@ -211,9 +211,9 @@ class Validate implements ValidateInterface
             // make instance - this should autoload
             $instance = new $class($this->config, $this);
 
+            // throws an error on fail
             switch (get_parent_class($instance)) {
                 case 'peel\validate\abstract\ValidationRuleAbstract':
-                    // throws an error on fail
                     $instance->isValid($value, $params);
                     break;
                 case 'peel\validate\abstract\FilterAbstract':
@@ -261,8 +261,8 @@ class Validate implements ValidateInterface
 
     /**
      * Send in NULL if you want to turn "off" dot notation "drill down" into your input
-     * 
-     * Send in something else if for some reason you would like to 
+     *
+     * Send in something else if for some reason you would like to
      * use another separator to indicate how to drill down to the next level
      */
     public function changeDotNotationSeparator(string $dot): self
@@ -371,7 +371,7 @@ class Validate implements ValidateInterface
                 // set if missing
                 if (is_object($input)) {
                     if (!isset($input->$key)) {
-                        $input->$key = new StdClass;
+                        $input->$key = new StdClass();
                     }
 
                     $input = &$input->$key;

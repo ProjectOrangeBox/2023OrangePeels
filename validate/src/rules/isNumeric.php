@@ -12,12 +12,10 @@ class isNumeric extends ValidationRuleAbstract implements ValidationRuleInterfac
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
+        $this->isStringNumber($input);
 
-        if (!is_scalar($input) || is_bool($input) || $input === '') {
-            throw new ValidationFailed('%s may only contain hex characters a-f0-9');
+        if (preg_match('/\A[\-+]?\d*\.?\d+\z/', $input) !== 1) {
+            throw new ValidationFailed('%s is not a numeric value.');
         }
-
-        return (bool) preg_match('/\A[\-+]?\d*\.?\d+\z/', $input);
     }
 }

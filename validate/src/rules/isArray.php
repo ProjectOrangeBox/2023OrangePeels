@@ -12,8 +12,8 @@ class isArray extends ValidationRuleAbstract implements ValidationRuleInterface
 {
     public function isValid(mixed $input, string $options = ''): void
     {
-        $this->errorString = '%s may only contain alpha characters, spaces, and dashes.';
-
-        return is_array($input);
+        if (!is_array($input)) {
+            throw new ValidationFailed('%s is not an array.');
+        }
     }
 }
