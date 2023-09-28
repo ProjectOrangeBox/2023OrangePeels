@@ -2,26 +2,25 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class Number extends FilterAbstract implements FilterRuleInterface
+
+class Number extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
-        $input = preg_replace('/[^\-\+0-9.]+/', '', (string)$input);
+        $this->input = preg_replace('/[^\-\+0-9.]+/', '', $this->input);
 
         $prefix = '';
 
-        if (isset($input[0])) {
-            $prefix = ($input[0] == '-' || $input[0] == '+') ? $input[0] : '';
+        if (isset($this->input[0])) {
+            $prefix = ($this->input[0] == '-' || $this->input[0] == '+') ? $this->input[0] : '';
         }
 
-        $input = $prefix . preg_replace('/[^0-9.]+/', '', $input);
+        $this->input = $prefix . preg_replace('/[^0-9.]+/', '', $this->input);
 
-        return $this->length($input, $options)->return();
+        $this->length($options);
     }
 }

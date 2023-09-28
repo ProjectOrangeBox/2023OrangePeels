@@ -28,7 +28,10 @@ class Flashmsg implements FlashMsgInterface
         $this->session = $session;
         $this->output = $output;
         $this->data = $data;
-        $this->event = Container::getServiceIfExists('events');
+
+        if (Container::has('events')) {
+            $this->event = Container::get('events');
+        }
 
         /* are there any messages in cold storage? */
         if (is_array($previousMessages = $this->session->get($this->config['session msg key']))) {

@@ -2,16 +2,15 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class StrToLower extends FilterAbstract implements FilterRuleInterface
+
+class StrToLower extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
-        return strtolower((string)$input);
+        $this->input = strtolower($this->input);
     }
 }

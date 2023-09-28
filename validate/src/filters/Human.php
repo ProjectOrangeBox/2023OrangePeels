@@ -2,15 +2,14 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class Human extends FilterAbstract implements FilterRuleInterface
+
+class Human extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
         /*
         only word characters - from a-z, A-Z, 0-9, including the _ (underscore) character
@@ -19,12 +18,12 @@ class Human extends FilterAbstract implements FilterRuleInterface
         replace _ (underscore) characters with spaces
         uppercase words
         */
-        $input = ucwords(str_replace('_', ' ', strtolower(trim(preg_replace('#\W+#', ' ', (string)$input), ' '))));
+        $this->input = ucwords(str_replace('_', ' ', strtolower(trim(preg_replace('#\W+#', ' ', $this->input), ' '))));
 
         /* run of spaces */
-        $input = \preg_replace('# +#', ' ', $input);
+        $this->input = \preg_replace('# +#', ' ', $this->input);
 
         /* options is max length */
-        return $this->length($input, $options)->return();
+        $this->length($options);
     }
 }

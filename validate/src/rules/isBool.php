@@ -6,16 +6,12 @@ namespace peel\validate\rules;
 
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
-use peel\validate\interfaces\ValidationRuleInterface;
 
-class isBool extends ValidationRuleAbstract implements ValidationRuleInterface
+
+class isBool extends ValidationRuleAbstract
 {
-    public function isValid(mixed $input, string $options = ''): void
+    public function isValid(string $options = ''): void
     {
-        $this->isStringNumberBooleanEmpty($input);
-
-        if (!$this->isBool($input)) {
-            throw new ValidationFailed('%s is not considered a boolean value.');
-        }
+        $this->isBool()->return();
     }
 }

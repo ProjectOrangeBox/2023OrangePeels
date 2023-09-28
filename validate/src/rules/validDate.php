@@ -7,11 +7,11 @@ namespace peel\validate\rules;
 use DateTime;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
-use peel\validate\interfaces\ValidationRuleInterface;
 
-class validDate extends ValidationRuleAbstract implements ValidationRuleInterface
+
+class validDate extends ValidationRuleAbstract
 {
-    public function isValid(mixed $input, string $options = ''): void
+    public function isValid(string $options = ''): void
     {
         $errorMsg = '%s is not a valid date/time value.';
 

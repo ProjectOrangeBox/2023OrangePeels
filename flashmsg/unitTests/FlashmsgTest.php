@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use dmyers\orange\Data;
-use dmyers\orange\Output;
+use dmyers\orange\stubs\Output;
 use peel\session\Session;
 use peel\flashmsg\Flashmsg;
 use Framework\Session\SaveHandlers\FilesHandler;
@@ -37,7 +37,6 @@ final class FlashmsgTest extends unitTestHelper
             'contentType' => 'text/html',
             'charSet' => 'utf-8',
             'show already sent error' => false,
-            'simulate' => true,
         ]);
 
         $this->data = new Data();

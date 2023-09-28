@@ -2,18 +2,17 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class ConvertDate extends FilterAbstract implements FilterRuleInterface
+
+class ConvertDate extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
         $options = ($options) ? $options : 'Y-m-d H:i:s';
 
-        return date($options, strtotime((string)$input));
+        $this->input = date($options, strtotime($this->input));
     }
 }

@@ -2,25 +2,24 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class Filename extends FilterAbstract implements FilterRuleInterface
+
+class Filename extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
         /*
         only word characters - from a-z, A-Z, 0-9, including the _ (underscore) character
         then trim any _ (underscore) characters from the beginning and end of the string
         */
-        $input = \strtolower(\trim(\preg_replace('#\W+#', '_', (string)$input), '_'));
+        $this->input = \strtolower(\trim(\preg_replace('#\W+#', '_', $this->input), '_'));
 
-        $input = \preg_replace('#_+#', '_', $input);
+        $this->input = \preg_replace('#_+#', '_', $this->input);
 
-        /* options is max length - filter is in orange core */
-        return $this->length($input, $options)->return();
+        /* options is max length */
+        $this->length($options);
     }
 }

@@ -6,15 +6,15 @@ namespace peel\validate\rules;
 
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
-use peel\validate\interfaces\ValidationRuleInterface;
 
-class alpha extends ValidationRuleAbstract implements ValidationRuleInterface
+
+class alpha extends ValidationRuleAbstract
 {
-    public function isValid(mixed $input, string $options = ''): void
+    public function isValid(): void
     {
-        $this->isStringNumberEmpty($input);
+        $this->isStringNumberEmpty();
 
-        if (!ctype_alpha($input)) {
+        if (!ctype_alpha($this->input)) {
             throw new ValidationFailed('%s may only contain alpha characters.');
         }
     }

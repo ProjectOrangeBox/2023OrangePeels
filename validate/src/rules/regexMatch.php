@@ -6,11 +6,11 @@ namespace peel\validate\rules;
 
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
-use peel\validate\interfaces\ValidationRuleInterface;
 
-class regexMatch extends ValidationRuleAbstract implements ValidationRuleInterface
+
+class regexMatch extends ValidationRuleAbstract
 {
-    public function isValid(mixed $input, string $options = ''): void
+    public function isValid(string $options = ''): void
     {
         $this->isStringNumberEmpty($input);
         $this->isRequired($options);

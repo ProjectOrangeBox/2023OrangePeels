@@ -3,147 +3,54 @@
 declare(strict_types=1);
 
 use peel\validate\Validate;
+use peel\validate\filters\ConvertDate;
+use peel\validate\exceptions\ValidationFailed;
 
 final class filterConvertDateTest extends \unitTestHelper
 {
-    protected $config;
-    protected $validateParent;
-    protected $ConvertDate;
+    private $validate;
 
     protected function setUp(): void
     {
-        $this->config = [
-            'isTrue' => [1, '1', 'y', 'on', 'yes', 't', 'true', true],
-            'isFalse' => [0, '0', 'n', 'off', 'no', 'f', 'false', false],
-        ];
-        $this->validateParent = new Validate($this->config);
-        $this->ConvertDate = new \peel\validate\filters\ConvertDate($this->config, $this->validateParent);
+        $vConfig = require __DIR__.'/../src/config/validate.php';
+        
+        $this->validate = new Validate($vConfig);
     }
 
     public function testEmpty(): void
     {
+
+        $value = '';
+        
         $this->expectException(ValidationFailed::class);
 
-        $this->ConvertDate->filter('', '');
+        (new ConvertDate($value, [], $this->validate))->filter();
     }
 
-    public function testString(): void
+    public function testMySQL(): void
     {
-        $this->assertEquals('', $this->ConvertDate->filter('abc', ''));
+        $value = 'Jan 21st 1901';
+        
+        (new ConvertDate($value, [], $this->validate))->filter('Y-m-d H:i:s');
+
+        $this->assertEquals('1901-01-21 00:00:00',$value);
     }
 
-    public function testInteger(): void
+    public function testMySQL2(): void
     {
-        $this->assertEquals('', $this->ConvertDate->filter(123, ''));
+        $value = 'Jan 21st 1901 4:45pm';
+        
+        (new ConvertDate($value, [], $this->validate))->filter('Y-m-d H:i:s');
+
+        $this->assertEquals('1901-01-21 16:45:00',$value);
     }
 
-    public function testInteger100(): void
+    public function testInvalid(): void
     {
-        $this->assertEquals('', $this->ConvertDate->filter(100, ''));
-    }
+        $value = [];
+        
+        $this->expectException(ValidationFailed::class);
 
-    public function testInteger200(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(200, ''));
-    }
-
-    public function testHex(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('abc123', ''));
-    }
-
-    public function testDecimal(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(123.45, ''));
-    }
-
-    public function testStdClass(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(new \StdClass(), ''));
-    }
-
-    public function testArray(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter([], ''));
-    }
-
-    public function testAssocArray(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(['foo' => 'bar'], ''));
-    }
-
-    public function testTrue(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(true, ''));
-    }
-
-    public function testFalse(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(false, ''));
-    }
-
-    public function testZero(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(0, ''));
-    }
-
-    public function testOne(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(1, ''));
-    }
-
-    public function testNull(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter(null, ''));
-    }
-
-    public function testLetters(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('abcdefghijklmnopqrstuvwxyz', ''));
-    }
-
-    public function testUppercase(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('ABCDEFG', ''));
-    }
-
-    public function testLowercase(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('abcdefg', ''));
-    }
-
-    public function testUuid(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('50e03466-4810-11ee-be56-0242ac120002', ''));
-    }
-
-    public function testEmail(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('johnny@appleseed.com', ''));
-    }
-
-    public function testEmails(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('johnny@appleseed.com,jenny@appleseed.com', ''));
-    }
-
-    public function testBase64(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('dGVzdA==', ''));
-    }
-
-    public function testIp(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('192.168.1.2', ''));
-    }
-
-    public function testUrl(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('http://www.example.com', ''));
-    }
-
-    public function testOneof(): void
-    {
-        $this->assertEquals('', $this->ConvertDate->filter('a', 'a,b,c'));
+        (new ConvertDate($value, [], $this->validate))->filter('Y-m-d H:i:s');
     }
 }

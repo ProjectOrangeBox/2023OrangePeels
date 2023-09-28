@@ -6,17 +6,16 @@ namespace peel\validate\rules;
 
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
-use peel\validate\interfaces\ValidationRuleInterface;
 
-class greaterThan extends ValidationRuleAbstract implements ValidationRuleInterface
+
+class greaterThan extends ValidationRuleAbstract
 {
-    public function isValid(mixed $input, string $options = ''): void
+    public function isValid(string $options = ''): void
     {
-        $this->isStringNumberEmpty($input);
-        $this->isInteger($options);
-
-        if ($input > $options) {
-            throw new ValidationFailed('%s is not greater than %s.');
+        $this->isStringNumberEmpty();
+        
+        if ((int)$this->input <= (int)$options) {
+            throw new ValidationFailed('%s is not greater than %3$s.');
         }
     }
 }

@@ -2,15 +2,15 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
 use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class Map extends FilterAbstract implements FilterRuleInterface
+
+class Map extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumberEmpty($input);
+        $this->isStringNumberEmpty();
 
         $map = [];
         $groups = explode(';', $options);
@@ -20,10 +20,10 @@ class Map extends FilterAbstract implements FilterRuleInterface
             $map[$key] = $value;
         }
 
-        if (!array_key_exists($input, $map)) {
+        if (!array_key_exists($this->input, $map)) {
             throw new ValidationFailed('Could not map %s.');
         }
 
-        return $map[$input];
+        $this->input = $map[$this->input];
     }
 }

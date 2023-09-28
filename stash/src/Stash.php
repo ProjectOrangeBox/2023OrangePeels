@@ -10,6 +10,7 @@ use dmyers\orange\interfaces\InputInterface;
 
 class Stash implements StashInterface
 {
+    private StashInterface $instance;
     protected InputInterface $input;
     protected SessionInterface $session;
 
@@ -19,6 +20,15 @@ class Stash implements StashInterface
     {
         $this->session = $session;
         $this->input = $input;
+    }
+
+    public static function getInstance(SessionInterface $session, InputInterface $input): self
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self($session, $input);
+        }
+
+        return self::$instance;
     }
 
     public function push(): self
@@ -42,6 +52,7 @@ class Stash implements StashInterface
             }
         }
 
+        // returns false on fail or no stashed data
         return is_array($stashed);
     }
 

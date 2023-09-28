@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace peel\validate;
 
 use stdClass;
-use peel\validate\exceptions\InvalidValue;
 use peel\validate\exceptions\RuleNotFound;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\interfaces\ValidateInterface;
@@ -32,11 +31,10 @@ class Validate implements ValidateInterface
     protected string $defaultErrorMsg = '%s is not valid.';
 
     protected string $ruleSeparator = '|';
-    protected string $optionRightDelimiter = '[';
-    protected string $optionLeftDelimiter = ']';
+    protected string $optionLeftDelimiter = '[';
+    protected string $optionRightDelimiter = ']';
 
     protected array $rules = [];
-    protected array $filters = [];
 
     public function __construct(array $config)
     {
@@ -47,15 +45,13 @@ class Validate implements ValidateInterface
         $this->ruleSeparator = $this->config['ruleSeparator'] ?? $this->ruleSeparator;
 
         $this->throwErrorOnFailure = $this->config['throwErrorOnFailure'] ?? $this->throwErrorOnFailure;
-        $this->optionRightDelimiter = $this->config['optionRightDelimiter'] ?? $this->optionRightDelimiter;
         $this->optionLeftDelimiter = $this->config['optionLeftDelimiter'] ?? $this->optionLeftDelimiter;
+        $this->optionRightDelimiter = $this->config['optionRightDelimiter'] ?? $this->optionRightDelimiter;
 
         // these are considered valid boolean values
         $this->isBool = $this->config['isTrue'] + $this->config['isFalse'];
 
-        // normalize
-        $this->rules = \array_change_key_case($this->config['rules'], \CASE_LOWER);
-        $this->filters = \array_change_key_case($this->config['filters'], \CASE_LOWER);
+        $this->addRules($this->config['rules']);
 
         // reset class
         $this->reset();
@@ -77,6 +73,23 @@ class Validate implements ValidateInterface
         $this->currentParams = '';
 
         $this->stopProcessing = false;
+
+        return $this;
+    }
+
+    // rules and filters are the same
+    public function addRule(string $name, string $class): self
+    {
+        $this->rules[strtolower($name)] = $class;
+
+        return $this;
+    }
+
+    public function addRules(array $rules): self
+    {
+        foreach ($rules as $name => $class) {
+            $this->addRule($name, $class);
+        }
 
         return $this;
     }
@@ -135,6 +148,23 @@ class Validate implements ValidateInterface
         return $this->throwException();
     }
 
+    // returns a value
+    public function filter(mixed $input, string $filters, ?string $human = null): mixed
+    {
+        $this->reset();
+
+        $this->validateValueRules($input, $filters, $this->makeHumanLookNice($human, 'Input'));
+
+        // if it has an error clear the value completely
+        if ($this->hasErrors()) {
+            $this->currentValue = '';
+        }
+
+        $this->throwException();
+
+        return $this->currentValue;
+    }
+
     protected function throwException(): self
     {
         if ($this->throwErrorOnFailure && $this->hasErrors()) {
@@ -146,6 +176,7 @@ class Validate implements ValidateInterface
 
     protected function validateValueRules(mixed $input, string $rules, string $human = null): self
     {
+        // continue processing rules
         $this->stopProcessing = false;
 
         foreach (explode($this->ruleSeparator, $rules) as $rule) {
@@ -160,12 +191,14 @@ class Validate implements ValidateInterface
         return $this;
     }
 
-    protected function validateValueRule(mixed $input, string $rule, ?string $human = ''): self
+    protected function validateValueRule(mixed &$input, string $rule, ?string $human = ''): self
     {
-        $this->currentValue = $input;
+        // save the current value
+        $this->currentValue = &$input;
 
         try {
-            $this->currentValue = $this->callRule($input, $rule);
+            // try to process the current value if it throws an exception current value isn't changed
+            $this->callRule($input, $rule);
         } catch (ValidationFailed $e) {
             // if the rule or filter threw an error it is captured here
             $this->addError($e->getMessage(), $human, $this->currentParams, $this->currentRule, (string)$this->currentValue);
@@ -181,7 +214,7 @@ class Validate implements ValidateInterface
      * single value
      * single rule
      */
-    protected function callRule(mixed $value, string $rule): mixed
+    protected function callRule(mixed &$value, string $rule): void
     {
         // default error
         $this->currentErrorMsg = $this->defaultErrorMsg;
@@ -189,7 +222,9 @@ class Validate implements ValidateInterface
         if (!empty($rule)) {
             $params = '';
 
-            if (preg_match(';(?<rule>.*)' . preg_quote($this->optionLeftDelimiter) . '(?<param>.*)' . preg_quote($this->optionRightDelimiter) . ';', $rule, $matches, 0, 0)) {
+            $regex = ';(?<rule>.*)' . preg_quote($this->optionLeftDelimiter) . '(?<param>.*)' . preg_quote($this->optionRightDelimiter) . ';';
+
+            if (preg_match($regex, $rule, $matches, 0, 0)) {
                 $rule = $matches['rule'];
                 $params = $matches['param'];
             }
@@ -198,34 +233,27 @@ class Validate implements ValidateInterface
             $this->currentParams = $this->makeParamsLookNice($params);
 
             $rule = strtolower($rule);
-            $class = '';
 
             if (isset($this->rules[$rule])) {
-                $class = $this->rules[$rule];
-            } elseif (isset($this->filters[$rule])) {
-                $class = $this->filters[$rule];
+                list($class, $method) = explode('>', $this->rules[$rule], 2);
             } else {
                 throw new RuleNotFound('Unknown Rule or Filter "' . $rule . '".');
             }
 
             // make instance - this should autoload
-            $instance = new $class($this->config, $this);
+            if (class_exists($class, true)) {
+                $instance = new $class($value, $this->config, $this);
+            } else {
+                throw new RuleNotFound('Unknown Class "' . $class . '".');
+            }
 
             // throws an error on fail
-            switch (get_parent_class($instance)) {
-                case 'peel\validate\abstract\ValidationRuleAbstract':
-                    $instance->isValid($value, $params);
-                    break;
-                case 'peel\validate\abstract\FilterAbstract':
-                    // uses the returned value
-                    $value = $instance->filter($value, $params);
-                    break;
-                default:
-                    throw new InvalidValue('Unknown Type "' . get_parent_class($instance) . '".');
+            if (method_exists($instance, $method)) {
+                $instance->$method($params);
+            } else {
+                throw new RuleNotFound('Unknown Method "' . $method . '" on Class "' . $class . '".');
             }
         }
-
-        return $value;
     }
 
     public function addError(string $errorMsg, string $human, string $params, string $rule, string $value): self
@@ -242,7 +270,7 @@ class Validate implements ValidateInterface
 
     public function values(): mixed
     {
-        return $this->currentValue;
+        return $this->value();
     }
 
     public function stopProcessing(): self
@@ -284,7 +312,7 @@ class Validate implements ValidateInterface
 
     public function hasErrors(): bool
     {
-        return (count($this->errors) > 0);
+        return $this->hasError();
     }
 
     public function errors(): array

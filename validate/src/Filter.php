@@ -19,6 +19,7 @@ class Filter implements FilterInterface
     protected array $validInputMethods = ['post', 'get', 'request', 'server', 'file', 'cookie'];
     protected string $filterSeparator = '|';
 
+    // if possible a NEW validate instance
     public function __construct(ValidateInterface $validate, InputInterface $input)
     {
         $this->validate = $validate;
@@ -64,22 +65,28 @@ class Filter implements FilterInterface
         return $this->pickFiltered('cookie', $name, $filters, $default);
     }
 
-    /**
-     * add an rule
-     */
-    public function attach(string $name, string $class): self
+    public function addFilter(string $name, string $class): self
     {
-        $this->validate->attachFilter($name, $class);
+        $this->validate->addRule($name, $class);
+
+        return $this;
+    }
+
+    public function addFilters(array $filters): self
+    {
+        foreach ($filters as $name => $class) {
+            $this->validate->addRule($name, $class);
+        }
 
         return $this;
     }
 
     /**
-     * $filter->field($foobar,'isString');
+     * $filter->input($foobar,'isString');
      */
-    public function field(mixed $value, string $filter): mixed
+    public function input(mixed $input, string $filter): mixed
     {
-        return $this->validate->filter($value, $filter);
+        return $this->validate->filter($input, $filter);
     }
 
     /**
@@ -202,15 +209,7 @@ class Filter implements FilterInterface
      */
     protected function pickFiltered(string $method, ?string $name, ?string $filters = '', $default = null): mixed
     {
-        $value = $this->pickFromInput($method, $name, $default);
-
-        if (!empty($filters)) {
-            foreach (\explode($this->filterSeparator, $filters) as $filter) {
-                $value = $this->field($value, $filter);
-            }
-        }
-
-        return $value;
+        return $this->input($this->pickFromInput($method, $name, $default), $filters);
     }
 
     /**

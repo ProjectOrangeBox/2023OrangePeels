@@ -2,22 +2,21 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class Slug extends FilterAbstract implements FilterRuleInterface
+
+class Slug extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
-        $input = preg_replace('~[^\pL\d]+~u', '-', (string)$input);
-        $input = iconv('utf-8', 'us-ascii//TRANSLIT', $input);
-        $input = preg_replace('~[^-\w]+~', '', $input);
-        $input = trim($input, '-');
-        $input = preg_replace('~-+~', '-', $input);
+        $this->input = preg_replace('~[^\pL\d]+~u', '-', $this->input);
+        $this->input = iconv('utf-8', 'us-ascii//TRANSLIT', $this->input);
+        $this->input = preg_replace('~[^-\w]+~', '', $this->input);
+        $this->input = trim($this->input, '-');
+        $this->input = preg_replace('~-+~', '-', $this->input);
 
-        return strtolower($input);
+        $this->input = strtolower($this->input);
     }
 }

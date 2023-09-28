@@ -6,16 +6,16 @@ namespace peel\validate\rules;
 
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
-use peel\validate\interfaces\ValidationRuleInterface;
 
-class oneOf extends ValidationRuleAbstract implements ValidationRuleInterface
+
+class oneOf extends ValidationRuleAbstract
 {
-    public function isValid(mixed $input, string $options = ''): void
+    public function isValid(string $options = ''): void
     {
-        $this->isStringNumberEmpty($input);
+        $this->isStringNumberEmpty();
 
-        if (!in_array($input, explode(',', $options), true)) {
-            throw new ValidationFailed('%s is not one of %s.');
+        if (!in_array($this->input, explode(',', $options), true)) {
+            throw new ValidationFailed('%s is not one of %3$s.');
         }
     }
 }

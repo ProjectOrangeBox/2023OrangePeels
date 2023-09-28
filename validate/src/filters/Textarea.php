@@ -2,16 +2,13 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class Textarea extends FilterAbstract implements FilterRuleInterface
+
+class Textarea extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
-
-        return $this->humanPlus((string)$input)->length($input, $options)->return();
+        $this->isStringNumber()->humanPlus()->length($options);
     }
 }

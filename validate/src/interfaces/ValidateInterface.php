@@ -8,10 +8,15 @@ interface ValidateInterface
 {
     public function reset(): self;
 
+    public function addRule(string $name, string $class): self;
+    public function addRules(array $rules): self;
+
     public function validateArray(array $input, array $ruleSet): self;
     public function validateObject(object $input, array $ruleSet): self;
     public function validateSet(mixed $input, array $ruleSet): self;
     public function validateValue(mixed $input, string $rules, ?string $human = null): self;
+
+    public function filter(mixed $input, string $filters, ?string $human = null): mixed;
 
     public function addError(string $errorMsg, string $human, string $params, string $rule, string $value): self;
 

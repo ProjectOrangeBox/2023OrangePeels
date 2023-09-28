@@ -2,16 +2,17 @@
 
 namespace peel\validate\filters;
 
-use peel\validate\abstract\FilterAbstract;
-use peel\validate\exceptions\ValidationFailed;
-use peel\validate\interfaces\FilterRuleInterface;
+use peel\validate\abstract\ValidationRuleAbstract;
 
-class Visible extends FilterAbstract implements FilterRuleInterface
+
+class Visible extends ValidationRuleAbstract
 {
-    public function filter(mixed $input, string $options = ''): mixed
+    public function filter(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
-        return $this->length(preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', (string)$input), $options)->return();
+        $this->input = preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', $this->input);
+
+        $this->length($options);
     }
 }
