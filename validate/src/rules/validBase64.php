@@ -7,14 +7,13 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class validBase64 extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
-        if (base64_decode($input, true) === false) {
+        if (base64_decode($this->input, true) === false) {
             throw new ValidationFailed('%s is not a valid base64 value.');
         }
     }

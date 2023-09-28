@@ -7,12 +7,11 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class validIP extends ValidationRuleAbstract
 {
     public function isValid(string $options = ''): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
         $flag = FILTER_FLAG_IPV4;
 
@@ -34,7 +33,7 @@ class validIP extends ValidationRuleAbstract
                 break;
         }
 
-        if (filter_var($input, FILTER_VALIDATE_IP, $flag) === false) {
+        if (filter_var($this->input, FILTER_VALIDATE_IP, $flag) === false) {
             throw new ValidationFailed('%s is not a valid ip address.');
         }
     }

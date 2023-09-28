@@ -8,7 +8,7 @@ use peel\validate\abstract\ValidationRuleAbstract;
 
 class isString extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
         $this->isStringNumberEmpty();
     }

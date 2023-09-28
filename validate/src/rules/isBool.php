@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace peel\validate\rules;
 
-use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
-
 
 class isBool extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
-        $this->isBool()->return();
+        $this->isBool();
     }
 }

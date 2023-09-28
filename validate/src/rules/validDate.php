@@ -8,22 +8,21 @@ use DateTime;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class validDate extends ValidationRuleAbstract
 {
     public function isValid(string $options = ''): void
     {
         $errorMsg = '%s is not a valid date/time value.';
 
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
         if (empty($options)) {
-            if (strtotime($input) === false) {
+            if (strtotime($this->input) === false) {
                 throw new ValidationFailed($errorMsg);
             }
         }
 
-        $date   = DateTime::createFromFormat($options, $input);
+        $date   = DateTime::createFromFormat($options, $this->input);
 
         if ($date === false) {
             throw new ValidationFailed($errorMsg);

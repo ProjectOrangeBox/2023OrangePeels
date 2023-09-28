@@ -7,14 +7,13 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class isHex extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
-        $this->isStringNumberEmpty($input);
+        $this->isStringNumberEmpty();
 
-        if (!ctype_xdigit((string)$input)) {
+        if (!ctype_xdigit((string)$this->input)) {
             throw new ValidationFailed('%s is not a hex value.');
         }
     }

@@ -7,24 +7,23 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class required extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
         $errorMsg = '%s is required.';
 
-        if (!is_object($input) || !is_bool($input)) {
+        if (!is_object($this->input) || !is_bool($this->input)) {
             throw new ValidationFailed($errorMsg);
         }
 
-        if (is_array($input) && count($input) == 0) {
+        if (is_array($this->input) && count($this->input) == 0) {
             throw new ValidationFailed($errorMsg);
         }
 
-        $this->isStringNumber($input, $errorMsg);
+        $this->isStringNumber($this->input, $errorMsg);
 
-        if (trim($input) !== '') {
+        if (trim($this->input) !== '') {
             throw new ValidationFailed($errorMsg);
         }
     }

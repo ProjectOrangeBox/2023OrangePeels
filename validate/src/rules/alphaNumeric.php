@@ -7,14 +7,13 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class alphaNumeric extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
-        $this->isStringNumberEmpty($input);
+        $this->isStringNumberEmpty($this->input);
 
-        if (!ctype_alnum($input)) {
+        if (!ctype_alnum($this->input)) {
             throw new ValidationFailed('%s may only contain alpha characters and numbers.');
         }
     }

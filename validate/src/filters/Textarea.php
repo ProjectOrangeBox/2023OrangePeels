@@ -9,6 +9,8 @@ class Textarea extends ValidationRuleAbstract
 {
     public function filter(string $options = ''): void
     {
+        $this->isOptionInteger($options);
+
         $this->isStringNumber()->humanPlus()->length($options);
     }
 }

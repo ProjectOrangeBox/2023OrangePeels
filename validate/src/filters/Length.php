@@ -8,6 +8,8 @@ class Length extends ValidationRuleAbstract
 {
     public function filter(string $options = ''): void
     {
+        $this->isOptionInteger($options);
+        
         $this->isStringNumber()->length($options);
     }
 }

@@ -7,14 +7,13 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class isLowercase extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
-        if (strtolower($input) !== $input) {
+        if (strtolower($this->input) !== $this->input) {
             throw new ValidationFailed('%s does not contain lowercase characters.');
         }
     }

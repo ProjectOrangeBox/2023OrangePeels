@@ -7,7 +7,6 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class alpha extends ValidationRuleAbstract
 {
     public function isValid(): void

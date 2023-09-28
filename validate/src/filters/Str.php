@@ -9,6 +9,8 @@ class Str extends ValidationRuleAbstract
 {
     public function filter(string $options = ''): void
     {
+        $this->isOptionInteger($options);
+
         $this->isStringNumber()->human()->length($options);
     }
 }

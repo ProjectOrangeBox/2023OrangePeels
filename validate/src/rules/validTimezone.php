@@ -7,14 +7,13 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class validTimezone extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
-        $this->isStringNumber($input);
+        $this->isStringNumber();
 
-        if (!in_array($input, timezone_identifiers_list(), true)) {
+        if (!in_array($this->input, timezone_identifiers_list(), true)) {
             throw new ValidationFailed('%s is not a valid timezone.');
         }
     }

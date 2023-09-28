@@ -6,7 +6,6 @@ namespace peel\validate\rules;
 
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class allowEmpty extends ValidationRuleAbstract
 {
     // this function has multiple exits!

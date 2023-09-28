@@ -7,12 +7,11 @@ namespace peel\validate\rules;
 use peel\validate\exceptions\ValidationFailed;
 use peel\validate\abstract\ValidationRuleAbstract;
 
-
 class isArray extends ValidationRuleAbstract
 {
-    public function isValid(string $options = ''): void
+    public function isValid(): void
     {
-        if (!is_array($input)) {
+        if (!is_array($this->input)) {
             throw new ValidationFailed('%s is not an array.');
         }
     }

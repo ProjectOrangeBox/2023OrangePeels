@@ -9,6 +9,8 @@ class Visible extends ValidationRuleAbstract
 {
     public function filter(string $options = ''): void
     {
+        $this->isOptionInteger($options);
+
         $this->isStringNumber();
 
         $this->input = preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', $this->input);

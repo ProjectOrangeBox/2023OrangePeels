@@ -7,7 +7,7 @@ use peel\validate\abstract\ValidationRuleAbstract;
 
 class StrToLower extends ValidationRuleAbstract
 {
-    public function filter(string $options = ''): void
+    public function filter(): void
     {
         $this->isStringNumber();
 

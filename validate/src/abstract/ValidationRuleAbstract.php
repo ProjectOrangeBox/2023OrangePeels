@@ -39,7 +39,7 @@ abstract class ValidationRuleAbstract
     protected function isBool(string $errorMsg = null): self
     {
         $value = $this->convert2bool();
-       
+
         if ($value === null) {
             $errorMsg = $errorMsg ?? '%s is not considered a boolean value.';
 
@@ -123,6 +123,26 @@ abstract class ValidationRuleAbstract
         }
 
         $this->input = (int)$this->input;
+
+        return $this;
+    }
+
+    protected function isOptionInteger(mixed &$input): self
+    {
+        if (preg_match('/^-?\d{1,}$/', (string)$input) !== 1) {
+            throw new ValidationFailed('%s must be an integer.');
+        }
+
+        $input = (int)$input;
+
+        return $this;
+    }
+
+    protected function isOptionRequired(mixed $input): self
+    {
+        if ($input === '') {
+            throw new ValidationFailed('you must include a option for %s.');
+        }
 
         return $this;
     }
