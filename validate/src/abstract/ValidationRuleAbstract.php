@@ -163,7 +163,9 @@ abstract class ValidationRuleAbstract
     protected function length($length = null): self
     {
         if (is_numeric($length)) {
+            
             $length = (int) $length;
+
             if ($length > 0) {
                 $this->input = substr((string)$this->input, 0, $length);
             }
